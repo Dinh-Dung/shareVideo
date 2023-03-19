@@ -50,7 +50,14 @@ function Menu({ children, items = [], onChange = defaultFn }) {
     );
 
     return (
-        <Tippy interactive placement="bottom-end" delay={[0, 500]} render={renderResult} onHide={handleReset}>
+        <Tippy
+            interactive
+            placement="bottom-end"
+            delay={[0, 500]}
+            offset={[12, 8]}
+            render={renderResult}
+            onHide={handleReset}
+        >
             {children}
         </Tippy>
     );
