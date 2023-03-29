@@ -21,7 +21,9 @@ function Search() {
 
     const handleChange = (e) => {
         const searchValue = e.target.value;
-        setSearchValue(searchValue);
+        if (!searchValue.startsWith(' ')) {
+            setSearchValue(searchValue);
+        }
     };
     const handleClear = () => {
         setSearchValue('');
@@ -48,8 +50,8 @@ function Search() {
     return (
         <div>
             <HeadlessTippy
-                visible={showResult && searchResult.length > 0}
                 interactive
+                visible={showResult && searchResult.length > 0}
                 render={(attrs) => (
                     <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                         <PopperWrapper>
@@ -78,7 +80,7 @@ function Search() {
                     )}
                     {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
 
-                    <button className={cx('search-btn')}>
+                    <button className={cx('search-btn')} onMouseDown={(e) => e.preventDefault()}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </button>
                 </div>

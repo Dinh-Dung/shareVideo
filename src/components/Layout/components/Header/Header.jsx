@@ -13,11 +13,12 @@ import {
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-
-import images from '~/asssets/images';
 import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
+import config from '~/config';
+import images from '~/asssets/images';
 import Button from '~/components/Button/Button';
 import Menu from '~/components/Popper/Menu/Menu';
 import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
@@ -42,11 +43,6 @@ const MENU_ITEMS = [
                     type: 'language',
                     code: 'vi',
                     title: 'Tiếng Việt',
-                },
-                {
-                    type: 'language',
-                    code: '@@',
-                    title: 'Tiếng @@',
                 },
             ],
         },
@@ -101,7 +97,9 @@ const Header = () => {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <img src="" alt="No images" />
+                <Link to={config.routes.home} className={cx('logo-link')}>
+                    <img src="" alt="No images" />
+                </Link>
                 <Search />
                 <div className={cx('actions')}>
                     {currentUser ? (
@@ -133,11 +131,7 @@ const Header = () => {
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
                         {currentUser ? (
-                            <Image
-                                className={cx('user-avatar')}
-                                alt="Dinh Van Dung"
-                                src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/0db5bbb8fa6536f19ff3ddec3f400d6d~c5_100x100.jpeg?x-expires=1678593600&x-signature=cgrTIVqyMgrEP3elwnAdfwV7PEs%3D"
-                            />
+                            <Image className={cx('user-avatar')} alt="Dinh Van Dung" src="" />
                         ) : (
                             <Tippy>
                                 <button className={cx('more-btn')}>
