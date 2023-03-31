@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import styles from './Slidebar.module.scss';
 import {
     HomeIcon,
     HomeActiveIcon,
@@ -8,12 +7,36 @@ import {
     UserGroupActiveIcon,
     LiveIcon,
     LiveActiveIcon,
+    ExploreIcon,
+    ExploreIconActive,
 } from '~/components/Icons';
+import config from '~/config';
+import styles from './Sidebar.module.scss';
+import Menu, { MenuItem } from './Menu';
+import SuggestedAccounts from '~/components/SuggestedAccounts';
+
 const cx = classNames.bind(styles);
 export const Sidebar = () => {
     return (
         <aside className={cx('wrapper')}>
-            <h2>Slidebar</h2>
+            <Menu>
+                <MenuItem title="For you" to={config.routes.home} icon={<HomeIcon />} activeIcon={<HomeActiveIcon />} />
+                <MenuItem
+                    title="Following"
+                    to={config.routes.following}
+                    icon={<UserGroupIcon />}
+                    activeIcon={<UserGroupActiveIcon />}
+                />
+                <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
+                <MenuItem
+                    title="Explore"
+                    icon={<ExploreIcon />}
+                    activeIcon={<ExploreIconActive />}
+                    to={config.routes.explore}
+                />
+            </Menu>
+            <SuggestedAccounts label="Suggested accounts" />
+            <SuggestedAccounts label="Following accounts" />
         </aside>
     );
 };

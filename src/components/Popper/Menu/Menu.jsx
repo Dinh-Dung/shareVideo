@@ -38,7 +38,7 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
     const handleOnback = () => {
         setHistory((prev) => prev.slice(0, prev.length - 1));
     };
-    const handleReset = () => {
+    const handleResetMenu = () => {
         setHistory((prev) => prev.slice(0, 1));
     };
     const renderResult = (attrs) => (
@@ -57,7 +57,7 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
             delay={[0, 500]}
             offset={[12, 8]}
             render={renderResult}
-            onHide={handleReset}
+            onHide={handleResetMenu}
             hideOnClick={hideOnClick}
         >
             {children}
