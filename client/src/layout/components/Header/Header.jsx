@@ -59,7 +59,7 @@ const MENU_ITEMS = [
 ];
 
 const Header = () => {
-    const currentUser = false;
+    const currentUser = true;
 
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
@@ -69,12 +69,13 @@ const Header = () => {
             default:
         }
     };
+ const profileRoutes = config.routes.profile;
 
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to: '/@hoaa',
+            to:profileRoutes,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -98,16 +99,16 @@ const Header = () => {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src="" alt="No images" />
+                    <img src={images.logo} alt="No images" />
                 </Link>
                 <Search />
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
                             <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
-                                <button className={cx('action-btn')}>
+                                <Link to={config.routes.upload}><button className={cx('action-btn')}  >
                                     <UploadIcon />
-                                </button>
+                                </button></Link>
                             </Tippy>
                             <Tippy delay={[0, 50]} content="Message" placement="bottom">
                                 <button className={cx('action-btn')}>
@@ -123,7 +124,7 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Button text>Upload</Button>
+                            <Button text >Upload</Button>
                             <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
                                 Log in
                             </Button>

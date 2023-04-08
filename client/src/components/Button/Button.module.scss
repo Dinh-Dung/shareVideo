@@ -56,7 +56,38 @@
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c55;
     }
 }
-
+.outlineDanger {
+    padding: 0.5rem;
+    color: red;
+    background-color: var(--white);
+    border-color: red;
+    &:hover {
+        border-color: var(red);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), #fe2c550f;
+    }
+}
+.success {
+    width: 164px;
+    color:#333;
+    background-color: transparent;
+    border-color: gray;
+    padding: 1.5rem 5rem;
+    &:hover {
+        border-color: var(gray);
+        background: linear-gradient(0deg, rgba(133, 133, 133, 0.06), rgba(216, 211, 211, 0.06)), #30b535;
+    }
+}
+.secondary {
+    width: 164px;
+    color:#333;
+    background-color: transparent;
+    border-color: gray;
+    padding: 1.5rem 5rem;
+    &:hover {
+        border-color: var(gray);
+        background: linear-gradient(0deg, rgba(133, 133, 133, 0.06), rgba(216, 211, 211, 0.06)), #f8f7f7;
+    }
+}
 .outline {
     color: var(--primary);
     border-color: currentColor;

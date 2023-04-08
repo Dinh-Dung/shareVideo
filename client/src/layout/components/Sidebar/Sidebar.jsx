@@ -14,6 +14,7 @@ import config from '~/config';
 import styles from './Sidebar.module.scss';
 import Menu, { MenuItem } from './Menu';
 import SuggestedAccounts from '~/components/SuggestedAccounts';
+import Footer from '~/components/Footer/Footer';
 
 const cx = classNames.bind(styles);
 export const Sidebar = () => {
@@ -27,7 +28,6 @@ export const Sidebar = () => {
                     icon={<UserGroupIcon />}
                     activeIcon={<UserGroupActiveIcon />}
                 />
-                <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
                 <MenuItem
                     title="Explore"
                     icon={<ExploreIcon />}
@@ -35,8 +35,11 @@ export const Sidebar = () => {
                     to={config.routes.explore}
                 />
             </Menu>
+                <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             <SuggestedAccounts label="Suggested accounts" />
             <SuggestedAccounts label="Following accounts" />
+            <Footer/>
+           
         </aside>
     );
 };
