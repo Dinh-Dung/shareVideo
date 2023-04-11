@@ -5,9 +5,12 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Button from '~/components/Button';
 import styles from './AccountPreview.module.scss';
+import { useAuth } from '~/hooks/useAuth';
 
 const cx = classNames.bind(styles);
 const AccountPreview = () => {
+    
+    const {user } = useAuth()
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -22,10 +25,10 @@ const AccountPreview = () => {
             </div>
             <div className={cx('body')}>
                 <p className={cx('nickname')}>
-                    <strong>dinhvandung</strong>
+                    <strong>{user?user.nickname:'nickname'}</strong>
                     <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />
                 </p>
-                <p className={cx('name')}>Dinh Van Dung</p>
+                <p className={cx('name')}>{user?user.fullname:'fullname'}</p>
                 <p className={cx('analytics')}>
                     <strong className={cx('value')}>6.7M</strong>
                     <span className={cx('label')}>Followers</span>

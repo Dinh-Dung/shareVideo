@@ -8,8 +8,12 @@ import Tippy from '@tippyjs/react/headless';
 import { Wrapper as PopperWrapper } from '../Popper';
 import styles from './SuggestedAccounts.module.scss';
 import AccountPreview from './AccountPreview/AccountPreview';
+import { useAuth } from '~/hooks/useAuth';
 const cx = classNames.bind(styles);
 const AccountItem = () => {
+
+    const {user } = useAuth()
+
     const renderPreview = (props) => {
         return (
             <div tabIndex="-1" {...props}>
@@ -30,10 +34,10 @@ const AccountItem = () => {
                     />
                     <div className={cx('item-info')}>
                         <p className={cx('nickname')}>
-                            <strong>dinhvandung</strong>
+                            <strong>{user?user.nickname:'user'}</strong>
                             <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />
                         </p>
-                        <p className={cx('name')}>Dinh Van Dung</p>
+                        <p className={cx('name')}>{user?user.fullname:'fullname'}</p>
                     </div>
                 </div>
             </Tippy>

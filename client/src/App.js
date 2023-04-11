@@ -4,7 +4,7 @@ import { publicRoutes } from '~/routes';
 import { DefaultLayout } from './layout/DefaultLayout/DefaultLayout';
 function App() {
     return (
-        <Router>
+       
             <div className="App">
                 <Routes>
                     {publicRoutes.map((route, index) => {
@@ -30,7 +30,7 @@ function App() {
                     })}
                 </Routes>
             </div>
-        </Router>
+      
     );
 }
 

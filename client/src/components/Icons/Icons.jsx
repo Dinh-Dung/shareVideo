@@ -201,3 +201,14 @@ export const ExploreIconActive = ({ width = '3.2rem', height = '3.2rem', classNa
         <path d="M21.92 26.89l3.4-2.05.76-3.9-3.4 2.06-.76 3.89z"></path>
     </svg>
 );
+
+export const Heart= ({ width = '3.2rem', height = '3.2rem', className }) => (
+    <svg
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg" 
+    fill="currentColor" 
+    width={width}
+    height={height}>
+    <use xlinkHref="#svg-heart-fill"></use>
+    </svg>
+);

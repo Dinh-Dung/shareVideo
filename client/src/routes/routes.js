@@ -7,6 +7,8 @@ import Upload from '~/pages/Upload/Upload';
 import Search from '~/pages/Search/Search';
 import Live from '~/pages/Live/Live';
 import Explore from '~/pages/Explore/Explore';
+import Login from '~/components/Auth/SignIn'
+import Register from '~/components/Auth/SignUp'
 //Layouts
 import { HeaderOnly } from '~/layout';
 const publicRoutes = [
@@ -17,6 +19,8 @@ const publicRoutes = [
     { path: config.routes.explore, component: Explore },
     { path: config.routes.upload, component: Upload, layout: HeaderOnly },
     { path: config.routes.search, component: Search, layout: null },
+    { path: config.routes.login, component: Login },
+    { path: config.routes.signup, component: Register },
 ];
 const privateRoutes = [];
 

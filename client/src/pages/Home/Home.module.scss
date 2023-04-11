@@ -1,3 +1,21 @@
+@mixin span-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    transition: all 200ms ease-in-out 0s;
+    background-color: rgba(22, 24, 35, 0.06);
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+@mixin count{
+    color: rgba(22, 24, 35, 0.75);
+    font-size: 12px;
+    line-height: 17px;
+    text-align: center;
+}
 .wrapper{
     margin-right: 16px;
     margin-left: 16px;
@@ -115,14 +133,12 @@ a.author-container{
 .video{
     position: relative;
     box-sizing: border-box;
-    -webkit-background-size: cover;
     background-size: cover;
     cursor: pointer;
     border-radius: 8px;
     overflow: hidden;
     margin-right: 20px;
-    height: 517px;
-    width: 289px;
+    
     video{
         display: block;
         width: 100%;
@@ -130,4 +146,26 @@ a.author-container{
         object-fit: cover;
         border-radius: 10px;
     }
+}
+.action-item{
+    display: flex;
+    flex-direction: column;
+    button{
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0px;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: column;
+    }
+}
+span.span-icon_like, span.span-icon_comment, span.span-icon_share{
+   @include span-icon()
+}
+strong.like-count, strong.comment-count, strong.share-count{
+    @include count()
 }

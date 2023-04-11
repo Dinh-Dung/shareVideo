@@ -5,6 +5,7 @@ import styles from './Button.module.scss';
 const cx = classNames.bind(styles);
 
 function Button({
+    type,
     to,
     href,
     primary = false,

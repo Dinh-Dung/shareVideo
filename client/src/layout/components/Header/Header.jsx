@@ -24,6 +24,9 @@ import Menu from '~/components/Popper/Menu/Menu';
 import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Image from '~/components/Image';
 import Search from '../Search';
+import SignIn from '~/components/Auth/SignIn';
+import { useAuth } from '~/hooks/useAuth';
+
 
 const cx = classNames.bind(styles);
 
@@ -59,7 +62,7 @@ const MENU_ITEMS = [
 ];
 
 const Header = () => {
-    const currentUser = true;
+    const {user,signOut } = useAuth()
 
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
@@ -69,13 +72,14 @@ const Header = () => {
             default:
         }
     };
- const profileRoutes = config.routes.profile;
+    const profileRoutes = config.routes.profile;
+    const uploadRoutes = config.routes.upload
 
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to:profileRoutes,
+            to: profileRoutes,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -91,7 +95,6 @@ const Header = () => {
         {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
-            to: '/logout',
             separate: true,
         },
     ];
@@ -99,16 +102,18 @@ const Header = () => {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src={images.logo} alt="No images" />
+                    <img src='' alt="No images" />
                 </Link>
                 <Search />
                 <div className={cx('actions')}>
-                    {currentUser ? (
+                    {user ? (
                         <>
                             <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
-                                <Link to={config.routes.upload}><button className={cx('action-btn')}  >
-                                    <UploadIcon />
-                                </button></Link>
+                                <Link to={config.routes.upload}>
+                                    <button className={cx('action-btn')}>
+                                        <UploadIcon />
+                                    </button>
+                                </Link>
                             </Tippy>
                             <Tippy delay={[0, 50]} content="Message" placement="bottom">
                                 <button className={cx('action-btn')}>
@@ -124,21 +129,26 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Button text >Upload</Button>
-                            <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />}>
-                                Log in
-                            </Button>
+                            <Link to={uploadRoutes}>
+                                <Button text>Upload</Button>
+                            </Link>
+
+                            <Link>
+                                <SignIn/>
+                            </Link>
                         </>
                     )}
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                        {currentUser ? (
-                            <Image className={cx('user-avatar')} alt="Dinh Van Dung" src="" />
+                    
+                    <Menu items={user ? userMenu : MENU_ITEMS } onChange={handleMenuChange}>
+                        {user ? (
+                             <Image className={cx('user-avatar')} alt='' src="" />
                         ) : (
+                           
                             <Tippy>
-                                <button className={cx('more-btn')}>
-                                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                                </button>
-                            </Tippy>
+                            <button className={cx('more-btn')}>
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
+                            </button>
+                        </Tippy>
                         )}
                     </Menu>
                 </div>

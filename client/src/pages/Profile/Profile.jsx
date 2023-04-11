@@ -4,11 +4,13 @@ import styles from './Profile.module.scss'
 
 import Button from '~/components/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '~/hooks/useAuth';
 
 
 const cx = classNames.bind(styles)
 const Profile = () => {
+    const {user} = useAuth()
     return <>
         <div className={cx('wrapper')}>
            <div className={cx('layout-user')}>
@@ -23,8 +25,8 @@ const Profile = () => {
                </span>
                 </div>
                 <div className={cx('user-title')}>
-                    <h2 className={cx('nickname-user')}>dinhdung_01</h2>
-                    <h1 className={cx('user-name')}>Dũng Đinh</h1>
+                    <h2 className={cx('nickname-user')}>{user?user.nickname:'nickname'}</h2>
+                    <h1 className={cx('user-name')}>{user?user.fullname:'fullname'}</h1>
                     <div className={cx('edit-profile')}>
                     <Button  leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}>
                                 Edit profile
@@ -39,11 +41,11 @@ const Profile = () => {
                 </div>
                 <div className={cx('number-follower')}>
                     <strong title='Followers'>35</strong>
-                    <span datatype='follower' className={cx('count-follwer')}>Follwing</span>
+                    <span datatype='follower' className={cx('count-follwer')}>Follwer</span>
                 </div>
                 <div className={cx('number-like')}>
                     <strong title='Likes'>35</strong>
-                    <span datatype='likes' className={cx('count-like')}>Follwing</span>
+                    <span datatype='likes' className={cx('count-like')}>Likes</span>
                 </div>
             </h3>
             <h2 className={cx('user-bio')}> No bio yet.</h2>
@@ -54,12 +56,19 @@ const Profile = () => {
         <div className={cx('layout-main')}>
             <div className={cx('tab')}>
                 <p className={cx('videos-tab')}><span>Videos</span></p>
-                <p className={cx('liked-tab')}><span>Liked</span></p>
+                <p className={cx('public-tab')}>
+                    <FontAwesomeIcon icon={faLock}/>
+                    <span style={{marginLeft:'1rem'}}>Public</span>
+                </p>
             </div>
             <div className={cx('video-column')}>
                 <div className={cx('user_video-list')}>
                     <div className={cx('user-video')}>
-                     
+                    <div className={cx('content-video')}>
+                <div className={cx('video')}>
+                    <video src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4" controls style={{width:'288px',height:'384px'}}></video>
+                </div>
+            </div>
                     </div>
                 </div>
             </div>
