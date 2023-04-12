@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
 
-import * as searchServices from '~/services/searchServices';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
@@ -40,8 +39,8 @@ function Search() {
         }
         const fetchApi = async () => {
             setLoading(true);
-            const result = await searchServices.search(debouncedValue);
-            setSearchResult(result);
+            // const result = await searchServices.search(debouncedValue);
+            // setSearchResult(result);
             setLoading(false);
         };
         fetchApi();

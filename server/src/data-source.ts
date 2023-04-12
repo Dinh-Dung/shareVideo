@@ -7,7 +7,7 @@ import { Comment } from './entity/Comment';
 import { Follow } from "./entity/Follow";
 import { Like } from "./entity/Like";
 import { Report } from "./entity/Report";
-import { User } from "./entity/User";
+import { Users } from "./entity/User";
 import { Video } from "./entity/Video";
 
 
@@ -21,7 +21,7 @@ export const AppDataSource = new DataSource({
     database: "share_video",
     synchronize: true,
     logging: false,
-    entities: [Category,Comment,Follow,Like,Report,User,Video],
+    entities: [Category,Comment,Follow,Like,Report,Users,Video],
     migrations: [],
     subscribers: [],
 })

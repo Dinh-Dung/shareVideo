@@ -1,3 +1,6 @@
+
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 //Pages
 import config from '~/config';
 import Home from '~/pages/Home/Home';
@@ -9,7 +12,7 @@ import Live from '~/pages/Live/Live';
 import Explore from '~/pages/Explore/Explore';
 import Login from '~/components/Auth/SignIn'
 import Register from '~/components/Auth/SignUp'
-//Layouts
+//Layouts   
 import { HeaderOnly } from '~/layout';
 const publicRoutes = [
     { path: config.routes.home, component: Home },
@@ -23,5 +26,5 @@ const publicRoutes = [
     { path: config.routes.signup, component: Register },
 ];
 const privateRoutes = [];
-
+    
 export { publicRoutes, privateRoutes };

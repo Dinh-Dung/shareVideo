@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
-import { User } from "./User"
+import { Users } from "./User"
 import {Video} from './Video'
 
 
@@ -17,6 +17,6 @@ export class Like{
     @ManyToOne(()=>Video, video =>video.comment)
     video: Video[]
 
-    @ManyToOne(()=> User, user=> user.like)
-    user: User[]
+    @ManyToOne(()=> Users, user=> user.like)
+    user: Users[]
 }

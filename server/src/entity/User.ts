@@ -6,7 +6,7 @@ import { Follow } from "./Follow"
 import { Report } from "./Report"
 
 @Entity()
-export class User {
+export class Users {
     @PrimaryGeneratedColumn()
     id: number
 

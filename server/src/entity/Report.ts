@@ -1,5 +1,5 @@
 import { Entity,PrimaryGeneratedColumn ,CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
-import { User } from "./User"
+import { Users } from "./User"
 
 @Entity()
 export class Report{
@@ -12,6 +12,6 @@ export class Report{
     @CreateDateColumn()
     created_at: Date
 
-    @ManyToOne(()=>User, user=>user.report)
-    user: User[]
+    @ManyToOne(()=>Users, user=>user.report)
+    user: Users
 }

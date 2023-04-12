@@ -1,5 +1,5 @@
 import { Entity,PrimaryGeneratedColumn ,CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
-import { User } from "./User"
+import { Users } from "./User"
 
 @Entity()
 export class Follow{
@@ -9,6 +9,6 @@ export class Follow{
     @CreateDateColumn()
     created_at: Date
 
-    @ManyToOne(()=>User, user=>user.follow)
-    user: User[]
+    @ManyToOne(()=>Users, user=>user.follow)
+    user: Users
 }

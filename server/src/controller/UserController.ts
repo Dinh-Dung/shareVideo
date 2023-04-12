@@ -1,16 +1,17 @@
 import { AppDataSource } from '../data-source'
 import { NextFunction, Request, Response } from "express"
-import { User } from "../entity/User"
+import { Users } from "../entity/User"
 import { genSalt, hash, compare } from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 
 export class UserController {
     constructor(
-        private userRepository = AppDataSource.getRepository(User)
+        private userRepository = AppDataSource.getRepository(Users)
     ) {
         this.login = this.login.bind(this)
         this.register = this.register.bind(this)
         this.getProfile = this.getProfile.bind(this)
+        this.getAllUser = this.getAllUser.bind(this)
     }
     
     async login(request: Request, response: Response, next: NextFunction) {
@@ -64,7 +65,7 @@ export class UserController {
             const randomNuber:number = Math.floor(Math.random()*1000)
             const nicknameRandom:string = `user${randomNuber}`
 
-            const user = Object.assign(new User(), {
+            const user = Object.assign(new Users(), {
                 fullname,
                 username,
                 nickname:nicknameRandom,
@@ -104,4 +105,18 @@ export class UserController {
             return response.sendStatus(403)
         }
     }
+    async getAllUser(request: Request, response: Response, next: NextFunction) {
+        try {
+            const userId = request['userId']
+
+            const user = await this.userRepository.find()            
+            return response.status(200).json({
+                data: user,
+                error: null
+            })
+        } catch (error) {
+            return response.sendStatus(403)
+        }
+    }
 }
+

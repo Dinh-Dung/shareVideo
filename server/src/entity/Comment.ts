@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
 import {Video} from './Video'
-import { User } from "./User"
+import { Users } from "./User"
 
 
 @Entity()
@@ -15,8 +15,8 @@ export class Comment{
     create_at: Date
 
     @ManyToOne(()=>Video, video =>video.comment)
-    video: Video[]
+    video: Video
 
-    @ManyToOne(()=> User, user=> user.comment)
-    user: User[]
+    @ManyToOne(()=> Users, user=> user.comment)
+    user: Users
 }

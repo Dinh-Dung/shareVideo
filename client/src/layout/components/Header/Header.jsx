@@ -4,7 +4,6 @@ import {
     faEarthAsia,
     faEllipsisVertical,
     faKeyboard,
-    faSignIn,
     faUser,
     faCoins,
     faGear,
@@ -63,23 +62,22 @@ const MENU_ITEMS = [
 
 const Header = () => {
     const {user,signOut } = useAuth()
-
-    const handleMenuChange = (menuItem) => {
-        switch (menuItem.type) {
-            case 'language':
-                // Handle change language
-                break;
-            default:
-        }
-    };
+    // const handleMenuChange = (menuItem) => {
+    //     switch (menuItem.type) {
+    //         case 'language':
+    //             // Handle change language
+    //             break;
+    //         default:
+    //     }
+    // };
     const profileRoutes = config.routes.profile;
-    const uploadRoutes = config.routes.upload
-
+    const uploadRoutes = config.routes.login
+  
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to: profileRoutes,
+            // to: `${profileRoutes}/${user.nickname}`,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -96,6 +94,7 @@ const Header = () => {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
             separate: true,
+            // onclick:signOut()
         },
     ];
     return (
@@ -129,21 +128,16 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Link to={uploadRoutes}>
-                                <Button text>Upload</Button>
-                            </Link>
-
                             <Link>
                                 <SignIn/>
                             </Link>
                         </>
                     )}
                     
-                    <Menu items={user ? userMenu : MENU_ITEMS } onChange={handleMenuChange}>
-                        {user ? (
+                    <Menu items={user != null? userMenu : MENU_ITEMS }>
+                        {user ? (   
                              <Image className={cx('user-avatar')} alt='' src="" />
                         ) : (
-                           
                             <Tippy>
                             <button className={cx('more-btn')}>
                                 <FontAwesomeIcon icon={faEllipsisVertical} />
