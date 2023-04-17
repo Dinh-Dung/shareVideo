@@ -172,7 +172,7 @@ p.videos-tab, p.public-tab{
 .video-column{
     width: 100%;
 }
-.user_video-list{
+.user_video{
     display: grid;
     gap: 24px 16px;
     grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
@@ -192,7 +192,6 @@ p.videos-tab, p.public-tab{
     border-radius: 8px;
     overflow: hidden;
     margin-right: 20px;
-    
     video{
         display: block;
         width: 100%;

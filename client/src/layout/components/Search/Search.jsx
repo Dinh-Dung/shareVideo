@@ -17,7 +17,7 @@ function Search() {
 
     const debouncedValue = useDebounce(searchValue, 500);
     const inputRef = useRef();
-
+  
     const handleChange = (e) => {
         const searchValue = e.target.value;
         if (!searchValue.startsWith(' ')) {
@@ -45,7 +45,6 @@ function Search() {
         };
         fetchApi();
     }, [debouncedValue]);
-
     return (
         <div>
             <HeadlessTippy

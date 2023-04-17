@@ -30,7 +30,6 @@ body {
     text-rendering: optimizespeed;
     color: var(--text-color);
     overflow-y: overlay;
-    
 }
 // Scrollbar CSS
 html *::-webkit-scrollbar {
@@ -101,4 +100,8 @@ body {
     font-family: SofiaPro;
     src: url('../../asssets/fonts/sofiapro-bold.woff');
     font-weight: 700;
+}
+
+video::-webkit-media-controls-fullscreen-button {
+    display: none;
 }

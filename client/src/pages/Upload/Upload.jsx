@@ -52,7 +52,7 @@ const Upload = () => {
         }
         setLoading(false)
     }
-
+ 
     return <>
         <div className={cx('wrapper')}>
             <div className={cx('layout')}>

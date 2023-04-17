@@ -1,6 +1,3 @@
-
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
 //Pages
 import config from '~/config';
 import Home from '~/pages/Home/Home';

@@ -1,57 +1,63 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
-import {Video} from './Video'
-import { Comment } from "./Comment"
-import { Like } from "./Like"
-import { Follow } from "./Follow"
-import { Report } from "./Report"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
+import { Video } from "./Video";
+import { Comment } from "./Comment";
+import { Like } from "./Like";
+import { Follow } from "./Follow";
+import { Report } from "./Report";
 
 @Entity()
 export class Users {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    fullname: string
+  @Column()
+  fullname: string;
 
-    @Column({unique:true,nullable:true})
-    nickname: string
+  @Column({ unique: true, nullable: true })
+  nickname: string;
 
-    @Column({unique:true})
-    username: string
-    
-    @Column()
-    password: string
+  @Column({ unique: true })
+  username: string;
 
-    @Column({unique:true, nullable:true})
-    email: string
+  @Column()
+  password: string;
 
-    @Column({nullable:true})
-    address: string
+  @Column({ unique: true, nullable: true })
+  email: string;
 
-    @Column({nullable:true})
-    avatar: string
+  @Column({ nullable: true })
+  address: string;
 
-    @Column({default:false})
-    tick:boolean
+  @Column({ nullable: true })
+  avatar: string;
 
-    @CreateDateColumn()
-    created_at: Date
+  @Column({ default: false })
+  tick: boolean;
 
-    @OneToMany(()=> Video, video=>video.user)
-    video: Video[]
+  @CreateDateColumn()
+  created_at: Date;
 
-    @OneToMany(()=> Comment, comment=> comment.user)
-    comment: Comment[]
+  @OneToMany(() => Video, (video) => video.user)
+  video: Video[];
 
-    @OneToMany(() => Like, comment=> comment.user)
-    like: Like[]
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comment: Comment[];
 
-    @OneToMany(()=> Follow, follow => follow.user)
-    follow: Follow[]
-    
-    @OneToMany(()=> Report, follow => follow.user)
-    report: Follow[]
-    // @OneToMany(()=> Comment, comment=> comment.user)
-    // comment: Comment
-    
+  @OneToMany(() => Like, (comment) => comment.user)
+  like: Like[];
+
+  @OneToMany(() => Follow, (follow) => follow.user)
+  follow: Follow[];
+
+  @OneToMany(() => Report, (follow) => follow.user)
+  report: Follow[];
+  // @OneToMany(()=> Comment, comment=> comment.user)
+  // comment: Comment
 }

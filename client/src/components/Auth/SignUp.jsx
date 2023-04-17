@@ -17,7 +17,7 @@ import { signUp } from '~/utils/auth-api';
 const cx = classNames.bind(styles);
 const customStyles = {
     content: {
-        top: '50%',
+        top: '54%',
         left: '50%',
         right: 'auto',
         bottom: 'auto',
@@ -72,7 +72,7 @@ const SignUp = () => {
 
         if (!data) {
             setLoading(false);
-            setMessage("Bad user data, please try again with another information !")
+            setMessage('Bad user data, please try again with another information !');
             return;
         }
 

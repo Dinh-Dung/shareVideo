@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { getUser,login,refreshToken } from "~/utils/auth-api";
+import { getUser,getAllUser,login,refreshToken } from "~/utils/auth-api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -15,7 +15,7 @@ export default function AuthProvider({ children }) {
 
     const signIn = async (username, password) => {
         const { access_token, refresh_token } = await login(username, password)
- 
+        
         setLoading(false)
         if (!access_token && !refresh_token) return setUser(null)
 
@@ -30,6 +30,7 @@ export default function AuthProvider({ children }) {
         setUser(null)
         navigate("/")
     }
+    
 
     const getUserByAccessToken = async () => {
         const user = await getUser()
@@ -52,7 +53,7 @@ export default function AuthProvider({ children }) {
     }
 
     useEffect(() => {
-        (async () => {
+        (async () => {  
             await refreshNewToken()
             const refreshAfter15Min = setInterval(refreshNewToken, 15 * 60 * 1000)
             return () => clearInterval(refreshAfter15Min)

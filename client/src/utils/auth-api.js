@@ -44,6 +44,17 @@ async function getUser() {
     }
 }
 
+async function getAllUser() {
+    try {
+        const { data, error } = await axios.get("http://localhost:8080/user/getAllUser")
+        if (!data || error) throw new Error()
+
+        return data.data
+    } catch (error) {
+        return null
+    }
+}
+
 async function signUp(newUser) {
     try {
         const { data } = await axios.post(`http://localhost:8080/user/register`, newUser)
@@ -58,6 +69,7 @@ async function signUp(newUser) {
 export {
     login,
     signUp,
+    getAllUser,
     refreshToken,
     getUser
 }

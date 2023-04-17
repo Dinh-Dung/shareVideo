@@ -29,21 +29,20 @@ const customStyles = {
     },
 };
 
-
 Modal.setAppElement('#root');
 const SignIn = () => {
-    const { signIn, accessToken } = useAuth()
-    const signupRoutes = config.routes.signup;
+    const { signIn, accessToken } = useAuth();
     const [modalIsOpen, setIsOpen] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [message, setMessage] = useState('');
 
-    useEffect(()=>{
-        if(accessToken){
-            setIsOpen(false)
+    useEffect(() => {
+        if (accessToken) {
+            setIsOpen(false);
         }
-    }, [accessToken])
+    }, [accessToken]);
     function openModal() {
         setIsOpen(true);
     }
@@ -55,26 +54,32 @@ const SignIn = () => {
         // references are now sync'd and can be accessed.
         // subtitle.style.color = '#f00';
     }
-    const handleUsername = (e)=>{
+    const handleUsername = (e) => {
         const data = e.target.value;
-        setUsername(data)
-    }
-    
-    const handlePassword = (e)=>{
-        const data = e.target.value;
-        setPassword(data)
-    }
+        setUsername(data);
+    };
 
-    const handleSubmit =async (e) =>  {
-     
-        e.preventDefault();
+    const handlePassword = (e) => {
+        const data = e.target.value;
+        setPassword(data);
+    };
+
+    const handleSubmit = async (e) => {
         setIsLoggingIn(true);
-        await signIn(username, password)
+        setMessage('');
+        e.preventDefault();
+
+        const data = await signIn(username, password);
+        if (!data) {
+            setMessage('Username or password incorrect !');
+            setIsLoggingIn(false);
+            return;
+        }
     };
 
     return (
         <div>
-            {accessToken ? <AccountItem/> : <Button primary leftIcon={<FontAwesomeIcon icon={faSignIn} />} onClick={openModal}>Log In</Button>}
+            {accessToken ? <AccountItem /> : <span onClick={openModal}>Log In</span>}
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -119,15 +124,23 @@ const SignIn = () => {
                                 onChange={handlePassword}
                             />
                         </div>
-                        <a href=""> Forgot password</a>
-                        <div className={cx('button-submit')} >
-                           <Button primary onClick={handleSubmit}>Login</Button>
+                        <div className={cx('message-box')}>{message}</div>
+                        <div className={cx('remember-forget-box')}>
+                            <div className={cx('remember-box')}>
+                                <input type="checkbox" />
+                            </div>
+                            <span className={cx('gold-content')}>Forget your password?</span>
+                        </div>
+                        <div className={cx('button-submit')}>
+                            <Button primary onClick={handleSubmit}>
+                                Sign In
+                            </Button>
                         </div>
                     </form>
                 </div>
                 <div className={cx('footer-login')}>
                     <div className={cx('bottom-text')}>Don’t have an account?</div>
-                    <Link >
+                    <Link>
                         <SignUp></SignUp>
                     </Link>
                 </div>

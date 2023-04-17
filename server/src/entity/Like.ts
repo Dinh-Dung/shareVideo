@@ -1,22 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, CreateDateColumn , Column, OneToMany, ManyToOne } from "typeorm"
-import { Users } from "./User"
-import {Video} from './Video'
-
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
+import { Users } from "./User";
+import { Video } from "./Video";
 
 @Entity()
-export class Like{
-    @PrimaryGeneratedColumn()
-    id: number
+export class Like {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    like:number
-    
-    @CreateDateColumn()
-    create_at: Date
+  @CreateDateColumn()
+  create_at: Date;
 
-    @ManyToOne(()=>Video, video =>video.comment)
-    video: Video[]
+  @ManyToOne(() => Video, (video) => video.comment)
+  video: Video;
 
-    @ManyToOne(()=> Users, user=> user.like)
-    user: Users[]
+  @ManyToOne(() => Users, (user) => user.like)
+  user: Users;
 }

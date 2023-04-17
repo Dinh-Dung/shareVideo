@@ -17,6 +17,7 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
 
+    // console.log(items[6])
     const renderItems = () => {
         return current.data.map((item, index) => {
             const isParent = !!item.children;

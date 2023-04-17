@@ -26,7 +26,6 @@ import Search from '../Search';
 import SignIn from '~/components/Auth/SignIn';
 import { useAuth } from '~/hooks/useAuth';
 
-
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
@@ -61,23 +60,21 @@ const MENU_ITEMS = [
 ];
 
 const Header = () => {
-    const {user,signOut } = useAuth()
     // const handleMenuChange = (menuItem) => {
     //     switch (menuItem.type) {
     //         case 'language':
-    //             // Handle change language
     //             break;
     //         default:
     //     }
     // };
     const profileRoutes = config.routes.profile;
-    const uploadRoutes = config.routes.login
-  
+    const uploadRoutes = config.routes.login;
+    const { user, signOut } = useAuth();
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            // to: `${profileRoutes}/${user.nickname}`,
+            to: `${profileRoutes}`,
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
@@ -94,14 +91,13 @@ const Header = () => {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
             separate: true,
-            // onclick:signOut()
         },
     ];
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src='' alt="No images" />
+                    <img src="" alt="No images" />
                 </Link>
                 <Search />
                 <div className={cx('actions')}>
@@ -129,20 +125,23 @@ const Header = () => {
                     ) : (
                         <>
                             <Link>
-                                <SignIn/>
+                                <Button primary>
+                                    {' '}
+                                    <SignIn />
+                                </Button>
                             </Link>
                         </>
                     )}
-                    
-                    <Menu items={user != null? userMenu : MENU_ITEMS }>
-                        {user ? (   
-                             <Image className={cx('user-avatar')} alt='' src="" />
-                        ) : (
+
+                    <Menu items={!user ? MENU_ITEMS : userMenu}>
+                        {!user ? (
                             <Tippy>
-                            <button className={cx('more-btn')}>
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                            </button>
-                        </Tippy>
+                                <button className={cx('more-btn')}>
+                                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                                </button>
+                            </Tippy>
+                        ) : (
+                            <Image className={cx('user-avatar')} alt={user ? user.avatar : 'no avatar'} src="" />
                         )}
                     </Menu>
                 </div>

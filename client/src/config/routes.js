@@ -1,7 +1,3 @@
-import { useAuth } from '~/hooks/useAuth';
-
-
-
 const routes = {
     home: '/',
     following: '/following',
