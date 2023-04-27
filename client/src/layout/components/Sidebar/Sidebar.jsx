@@ -35,11 +35,9 @@ export const Sidebar = () => {
                     to={config.routes.explore}
                 />
             </Menu>
-                <MenuItem title="LIVE" to={config.routes.live} icon={<LiveIcon />} activeIcon={<LiveActiveIcon />} />
             <SuggestedAccounts label="Suggested accounts" />
             <SuggestedAccounts label="Following accounts" />
-            <Footer/>
-           
+            <Footer />
         </aside>
     );
 };

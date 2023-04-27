@@ -2,18 +2,61 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './video.module.scss';
 import Button from '~/components/Button/Button';
 import config from '~/config';
-import Comments from '../Comments/Comments';
-import SignIn from '../Auth/SignIn';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '~/hooks/useAuth';
+import { likeCountOfVideo } from '~/utils/like-api';
+import { getComment } from '~/utils/comment-api';
+import { followUser, unfollowUser } from '~/utils/follow-api';
+import { likeVideo, unlikeVideo } from '~/utils/like-api';
 
 const cx = classNames.bind(styles);
 
 const VideoPlayer = ({ video }) => {
+    const { user } = useAuth();
+    const [likeOfVideo, setLikeOfVideo] = useState(0);
+    const [likeActive, setLikeActive] = useState(false);
+    const [commentOfVideo, setCommentOfVideo] = useState([]);
+    const [followActive, setFollowActive] = useState(false);
     const videoRef = useRef(null);
+
+    const navigate = useNavigate();
+
+    const handleClickLikeActive = async () => {
+        if (likeActive) {
+            setLikeActive(false);
+            setLikeOfVideo((s) => s - 1);
+            await unlikeVideo(video.id, user.id);
+        } else {
+            setLikeActive(true);
+            setLikeOfVideo((s) => s + 1);
+            await likeVideo(video.id, user.id);
+        }
+    };
+    const handleClickFollowUser = async () => {
+        if (followActive) {
+            setFollowActive(false);
+            await unfollowUser(user.id, video.user.id);
+        } else {
+            setFollowActive(true);
+            await followUser(user.id, video.user.id);
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+            // count like
+            const getLikeCountOfVideo = await likeCountOfVideo(video.id);
+            setLikeOfVideo(getLikeCountOfVideo);
+            // count comment
+            const getCommentOfVideo = await getComment(video.id);
+            setCommentOfVideo(getCommentOfVideo);
+        })();
+    }, [video.id]);
 
     useEffect(() => {
         let options = {
@@ -23,9 +66,13 @@ const VideoPlayer = ({ video }) => {
         let handlePlay = (entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    videoRef.current.play();
+                    if (videoRef.current) {
+                        videoRef.current.play();
+                    }
                 } else {
-                    videoRef.current.pause();
+                    if (videoRef.current) {
+                        videoRef.current.pause();
+                    }
                 }
             });
         };
@@ -42,17 +89,21 @@ const VideoPlayer = ({ video }) => {
         }
     }, [videoRef]);
 
-    const onChangeTab = () => {};
+    const handleClickComment = () => {
+        if (user) {
+            navigate(`/comment?videoId=${video.id}`);
+        }
+    };
+
     return (
         <div className={cx('list_item-container')}>
             <Link to={config.routes.profile}>
                 <div className={cx('avatar-user')} style={{ width: '56px', height: '56px' }}>
-                    <span style={{ width: '56px', height: '56px' }}>
-                        <img
-                            src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/46b122ac693478eafe7999fdca35770e~c5_100x100.jpeg?x-expires=1681113600&x-signature=iExtTF6LtrVVojgY94Z4g0X4zPc%3D"
-                            alt=""
-                        />
-                    </span>
+                    <Link className={cx('browse-user-avatar')}>
+                        <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
+                            <span>{video.user.fullname[0]}</span>
+                        </div>
+                    </Link>
                 </div>
             </Link>
             <div className={cx('content-container')}>
@@ -62,9 +113,15 @@ const VideoPlayer = ({ video }) => {
                             <h3 className={cx('video-author_uniqued')}>{video.user.fullname}</h3>
                             <h4 className={cx('video-author_nickname')}>{video.user.nickname}</h4>
                         </Link>
-                        <Button outlineDanger className={cx('button')}>
-                            Follow
-                        </Button>
+                        {user ? (
+                            <Button outlineDanger className={cx('button')} onClick={() => handleClickFollowUser()}>
+                                {!followActive ? 'Follow' : 'Following'}
+                            </Button>
+                        ) : (
+                            <Button outlineDanger className={cx('button-close')}>
+                                Follow
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className={cx('span-text')}>
@@ -82,24 +139,42 @@ const VideoPlayer = ({ video }) => {
                         ></video>
                     </div>
 
-                    <div className={cx('action-item')}>
-                        <button type="button" className={cx('like')}>
-                            <span className={cx('span-icon_like')}>
-                                <FontAwesomeIcon icon={faHeart} style={{ width: '24px', height: '24px' }} />
-                            </span>
-                            <strong className={cx('like-count')}>245.4K</strong>
-                        </button>
-                        <button type="button" className={cx('comment')}>
-                            <Comments></Comments>
-                            <strong className={cx('comment-count')}>245</strong>
-                        </button>
-                        <button type="button" className={cx('share')}>
-                            <span className={cx('span-icon_share')}>
-                                <FontAwesomeIcon icon={faShare} style={{ width: '24px', height: '24px' }} />
-                            </span>
-                            <strong className={cx('share-count')}>1234</strong>
-                        </button>
-                    </div>
+                    {user ? (
+                        <div className={cx('action-item')}>
+                            <button type="button" className={cx('like')}>
+                                <span
+                                    className={likeActive ? cx('span-icon_like-active') : cx('span-icon_like')}
+                                    onClick={() => handleClickLikeActive()}
+                                >
+                                    <FontAwesomeIcon icon={faHeart} style={{ width: '24px', height: '24px' }} />
+                                </span>
+                                <strong className={cx('like-count')}>{likeOfVideo}</strong>
+                            </button>
+
+                            <button type="button" className={cx('comment')} onClick={handleClickComment}>
+                                <span className={cx('span-icon_comment')}>
+                                    <FontAwesomeIcon icon={faCommentDots} style={{ width: '24px', height: '24px' }} />
+                                </span>
+                                <strong className={cx('comment-count')}>{commentOfVideo.length}</strong>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={cx('action-item')}>
+                            <button type="button" className={cx('like')}>
+                                <span className={cx('span-icon_like')}>
+                                    <FontAwesomeIcon icon={faHeart} style={{ width: '24px', height: '24px' }} />
+                                </span>
+                                <strong className={cx('like-count')}>{likeOfVideo}</strong>
+                            </button>
+
+                            <button type="button" className={cx('comment')}>
+                                <span className={cx('span-icon_comment')}>
+                                    <FontAwesomeIcon icon={faCommentDots} style={{ width: '24px', height: '24px' }} />
+                                </span>
+                                <strong className={cx('comment-count')}>{commentOfVideo.length}</strong>
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

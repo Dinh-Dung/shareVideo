@@ -67,6 +67,7 @@ const Header = () => {
     //         default:
     //     }
     // };
+
     const profileRoutes = config.routes.profile;
     const uploadRoutes = config.routes.login;
     const { user, signOut } = useAuth();
@@ -91,13 +92,14 @@ const Header = () => {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
             separate: true,
+            onclick: signOut,
         },
     ];
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src="" alt="No images" />
+                    <img src={images.logo} alt="No images" />
                 </Link>
                 <Search />
                 <div className={cx('actions')}>
@@ -110,7 +112,7 @@ const Header = () => {
                                     </button>
                                 </Link>
                             </Tippy>
-                            <Tippy delay={[0, 50]} content="Message" placement="bottom">
+                            {/* <Tippy delay={[0, 50]} content="Message" placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <MessageIcon />
                                 </button>
@@ -120,7 +122,7 @@ const Header = () => {
                                     <span className={cx('bagdge')}>12</span>
                                     <InboxIcon />
                                 </button>
-                            </Tippy>
+                            </Tippy> */}
                         </>
                     ) : (
                         <>
@@ -141,7 +143,9 @@ const Header = () => {
                                 </button>
                             </Tippy>
                         ) : (
-                            <Image className={cx('user-avatar')} alt={user ? user.avatar : 'no avatar'} src="" />
+                            <div className={cx('user-avatar')} style={{ width: '40px', height: '40px' }}>
+                                <span>{user.fullname[0]}</span>
+                            </div>
                         )}
                     </Menu>
                 </div>

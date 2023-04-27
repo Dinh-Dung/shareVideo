@@ -13,15 +13,20 @@ export class FollowController {
     this.unfollowUser = this.unfollowUser.bind(this);
   }
   async followUser(request: Request, response: Response, next: NextFunction) {
-    const { userId } = request.body;
-
+    const { me, tiktoker } = request.body;
     try {
-      const user = await this.userRepository.findOneBy({ id: userId });
-      if (!user) {
-        throw new Error(`User with id ${userId} not found`);
+      const meData = await this.userRepository.findOneBy({ id: me });
+      const tiktokerData = await this.userRepository.findOneBy({
+        id: tiktoker,
+      });
+
+      if (!me || !tiktoker) {
+        throw new Error(`User with id not found`);
       }
       const follow = new Follow();
-      follow.user = user;
+      follow.me = meData;
+      follow.tiktoker = tiktokerData;
+
       await this.followRepository.save(follow);
       return response.status(200).send("Follow user successfully");
     } catch (error) {
@@ -57,10 +62,10 @@ export class FollowController {
     }
   }
   async unfollowUser(request: Request, response: Response, next: NextFunction) {
-    const { userId } = request.body;
+    const { me, tiktoker } = request.body;
     try {
       const follow = await this.followRepository.findOne({
-        where: { user: { id: userId } },
+        where: { me: { id: me }, tiktoker: { id: tiktoker } },
         order: { id: "DESC" },
       });
 

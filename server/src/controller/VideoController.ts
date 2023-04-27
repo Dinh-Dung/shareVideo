@@ -5,6 +5,7 @@ import { AppDataSource } from "../data-source";
 import { Users } from "../entity/User";
 import { Category } from "../entity/Category";
 import { Equal } from "typeorm";
+import { Comment } from "../entity/Comment";
 
 // Configuration
 cloudinary.config({
@@ -28,6 +29,7 @@ export class VideoController {
     this.uploadVideo = this.uploadVideo.bind(this);
     this.getVideoList = this.getVideoList.bind(this);
     this.getUserVideoList = this.getUserVideoList.bind(this);
+    this.getVideoAndCommentById = this.getVideoAndCommentById.bind(this);
   }
 
   async uploadVideo(
@@ -91,7 +93,9 @@ export class VideoController {
     next: NextFunction
   ) {
     try {
-      const list = await this.videoRepository.find({ relations: ["user"] });
+      const list = await this.videoRepository.find({
+        relations: ["user"],
+      });
 
       const shuffledList = list.sort(() => Math.random() - 0.5);
       return response.status(200).json({
@@ -127,6 +131,34 @@ export class VideoController {
       return response.status(400).json({
         data: null,
         error: "get user video failed",
+      });
+    }
+  }
+  async getVideoAndCommentById(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const videoId = request.params.videoId;
+      const videoById = await this.videoRepository
+        .createQueryBuilder("video")
+        .leftJoinAndSelect("video.user", "user")
+        .leftJoinAndSelect("video.comment", "comment")
+        .leftJoinAndSelect("comment.user", "commentUser")
+        .where("video.id = :id", { id: videoId })
+        .getOne();
+
+      return response.status(200).json({
+        data: videoById,
+        error: null,
+      });
+    } catch (error) {
+      console.log(error);
+
+      return response.status(400).json({
+        data: null,
+        error: "get video failed",
       });
     }
   }

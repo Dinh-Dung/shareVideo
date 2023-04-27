@@ -12,6 +12,7 @@ export class CommentController {
   ) {
     this.commentVideo = this.commentVideo.bind(this);
     this.getCommentVideo = this.getCommentVideo.bind(this);
+    this.deleteCommentVideo = this.deleteCommentVideo.bind(this);
   }
   async commentVideo(request: Request, response: Response, next: NextFunction) {
     const { userId, videoId, commentText } = request.body;
@@ -57,6 +58,26 @@ export class CommentController {
       return response.status(400).json({
         data: null,
         error: "You can't get comment video",
+      });
+    }
+  }
+  async deleteCommentVideo(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const commentId = request.body;
+    try {
+      // const comment = await this.commentRepository.findOneBy({
+      //   comment: { id: commentId },
+      // });
+      // await this.commentRepository.remove(comment);
+      return response.status(200).send("Delete comment successfully");
+    } catch (error) {
+      console.log(error);
+      return response.status(400).json({
+        data: null,
+        error: "You can't delete comment video",
       });
     }
   }

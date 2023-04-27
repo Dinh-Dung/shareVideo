@@ -26,9 +26,7 @@ button.close-btn {
     position: absolute;
     z-index: 1;
     display: flex;
-    -webkit-box-pack: center;
     justify-content: center;
-    -webkit-box-align: center;
     align-items: center;
     width: 40px;
     height: 40px;
@@ -47,9 +45,20 @@ button.close-btn {
         opacity: 0.7;
     }
 }
-
-.browser-mode-container {
+.close {
+    display: none;
+}
+.wrapper {
     position: fixed;
+    inset: 70px 170px 76px 170px;
+    background: rgb(255, 255, 255);
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #dcdcdc;
+}
+.browser-mode-container {
+    position: relative;
     display: flex;
     flex-direction: row;
 }
@@ -59,6 +68,7 @@ button.close-btn {
     position: relative;
     overflow: hidden;
     padding: 0px 80px;
+    max-width: 100%;
     height: 79.5vh;
 }
 .content-video {
@@ -99,7 +109,7 @@ button.close-btn {
     position: relative;
     flex: 0 0 82px;
 }
-a.browse-user-avatar {
+.browse-user-avatar {
     flex: 0 0 40px;
     margin-right: 12px;
 }
@@ -109,32 +119,9 @@ a.browse-user-avatar {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
     justify-content: center;
     span {
-        display: inline-block;
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-feature-settings: 'tnum';
-        position: relative;
-        overflow: hidden;
-        color: #fff;
-        white-space: nowrap;
-        text-align: center;
-        vertical-align: middle;
-        line-height: 32px;
-        border-radius: 50%;
-        background-color: rgba(136, 136, 136, 0.5);
-        border-color: rgba(22, 24, 35, 0.12);
-        border-width: 0.5px;
-        cursor: pointer;
     }
     img {
         max-width: 100%;
@@ -145,6 +132,28 @@ a.browse-user-avatar {
             object-fit: cover;
         }
     }
+}
+.user-avatar span {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-feature-settings: 'tnum';
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+    width: 42px;
+    height: 42px;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 42px;
+    border-radius: 50%;
+    border-color: rgba(22, 24, 35, 0.12);
+    border-width: 0.5px;
+    cursor: pointer;
+    background-color: rgba(136, 136, 136, 0.5);
 }
 .browse-user-info {
     text-overflow: ellipsis;
@@ -297,11 +306,21 @@ button.btn-follow {
     margin-bottom: 16px;
     position: relative;
     span.browse-user-comment {
-        font-family: SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
+        font-family: var(--font-family);
         font-weight: 700;
         font-size: 18px;
         line-height: 25px;
     }
+}
+span.browse-nickname-comment {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    direction: ltr;
+}
+
+span.time {
+    font-size: 8px;
 }
 // comment
 .bottom-comment-container {

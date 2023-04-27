@@ -53,11 +53,12 @@ export class Users {
   @OneToMany(() => Like, (comment) => comment.user)
   like: Like[];
 
-  @OneToMany(() => Follow, (follow) => follow.user)
-  follow: Follow[];
+  @OneToMany(() => Follow, (follow) => follow.me)
+  follower: Follow[];
+
+  @OneToMany(() => Follow, (follow) => follow.tiktoker)
+  following: Follow[];
 
   @OneToMany(() => Report, (follow) => follow.user)
   report: Follow[];
-  // @OneToMany(()=> Comment, comment=> comment.user)
-  // comment: Comment
 }

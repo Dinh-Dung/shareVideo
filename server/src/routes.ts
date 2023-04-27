@@ -7,6 +7,7 @@ import * as multer from "multer";
 import { VideoController } from "./controller/VideoController";
 import { LikeController } from "./controller/LikeController";
 import { FollowController } from "./controller/FollowController";
+import { SaveAtive } from "./controller/SaveAtiveController";
 
 // Configure Multer
 const storage = multer.memoryStorage();
@@ -20,6 +21,7 @@ const videoController = new VideoController();
 const likeController = new LikeController();
 const followController = new FollowController();
 const commentController = new CommentController();
+const saveActiveController = new SaveAtive();
 // category
 router.get("/category/getList", categoryController.getCategory);
 router.post("/category/new", categoryController.newCategory);
@@ -41,19 +43,32 @@ router.get(
   AuthGuard,
   videoController.getUserVideoList
 );
+router.get(
+  "/video/getVideoAndCommentById/:videoId",
+  videoController.getVideoAndCommentById
+);
 // like
 router.post("/like/likeVideo", AuthGuard, likeController.likeVideo);
 router.post("/like/unlike", AuthGuard, likeController.unlikeVideo);
 router.get("/like/getLikeCount/:videoId", likeController.likeCountOfVideo);
+router.post(
+  "/like/getActiveLike",
+  AuthGuard,
+  saveActiveController.getActiveLike
+);
 // follow
 router.post("/follow/followUser", AuthGuard, followController.followUser);
 router.post("/follow/unFollow", AuthGuard, followController.unfollowUser);
 router.get("/follow/getFollowUser/:userId", followController.getFollowUser);
 //comment
 router.post("/comment/commentVideo", AuthGuard, commentController.commentVideo);
+router.post(
+  "/comment/deleteComment",
+  AuthGuard,
+  commentController.deleteCommentVideo
+);
 router.get(
   "/comment/getCommentVideo/:videoId",
-  AuthGuard,
   commentController.getCommentVideo
 );
 export default router;

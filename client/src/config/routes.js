@@ -8,5 +8,6 @@ const routes = {
     explore: '/explore',
     login: '/login',
     signup: '/signup',
+    comment: '/comment',
 };
 export default routes;

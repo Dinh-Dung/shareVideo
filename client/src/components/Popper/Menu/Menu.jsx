@@ -7,13 +7,10 @@ import PropTypes from 'prop-types';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import MenuItem from './MenuItem';
 import Header from './Header';
-import { useAuth } from '~/hooks/useAuth';
 const cx = classNames.bind(styles);
 
 const defaultFn = () => {};
-
 function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn }) {
-    const {user} = useAuth()
     const [history, setHistory] = useState([{ data: items }]);
     const current = history[history.length - 1];
 

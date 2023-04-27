@@ -9,7 +9,7 @@ import Button from '~/components/Button/Button';
 import config from '~/config';
 import { getVideoList } from '~/utils/upload-api';
 import VideoPlayer from '~/components/Video';
-
+import Comments from '../Comments/Comments';
 
 const cx = classNames.bind(styles);
 const Home = () => {
