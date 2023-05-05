@@ -7,7 +7,8 @@ import * as multer from "multer";
 import { VideoController } from "./controller/VideoController";
 import { LikeController } from "./controller/LikeController";
 import { FollowController } from "./controller/FollowController";
-import { SaveAtive } from "./controller/SaveAtiveController";
+import { SaveActive } from "./controller/SaveAtiveController";
+import { AdminController } from "./controller/AdminController";
 
 // Configure Multer
 const storage = multer.memoryStorage();
@@ -21,7 +22,9 @@ const videoController = new VideoController();
 const likeController = new LikeController();
 const followController = new FollowController();
 const commentController = new CommentController();
-const saveActiveController = new SaveAtive();
+const saveActiveController = new SaveActive();
+const adminController = new AdminController();
+
 // category
 router.get("/category/getList", categoryController.getCategory);
 router.post("/category/new", categoryController.newCategory);
@@ -60,6 +63,12 @@ router.post(
 router.post("/follow/followUser", AuthGuard, followController.followUser);
 router.post("/follow/unFollow", AuthGuard, followController.unfollowUser);
 router.get("/follow/getFollowUser/:userId", followController.getFollowUser);
+router.post(
+  "/follow/getActiveFollow",
+  AuthGuard,
+  saveActiveController.getActiveFollow
+);
+
 //comment
 router.post("/comment/commentVideo", AuthGuard, commentController.commentVideo);
 router.post(
@@ -71,4 +80,18 @@ router.get(
   "/comment/getCommentVideo/:videoId",
   commentController.getCommentVideo
 );
+
+//admin
+router.get(
+  "/admin/getPendingVideos",
+  AuthGuard,
+  adminController.getVideoPending
+);
+
+router.post(
+  "/admin/acceptPendingVideo",
+  AuthGuard,
+  adminController.acceptVideoUploaded
+);
+
 export default router;

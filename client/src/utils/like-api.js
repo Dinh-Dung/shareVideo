@@ -32,3 +32,14 @@ export async function unlikeVideo(videoId, userId) {
         return [];
     }
 }
+export async function userLiked(videoId, userId) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/like/getActiveLike`, { userId, videoId });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

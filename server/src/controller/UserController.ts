@@ -78,7 +78,6 @@ export class UserController {
         error: null,
       });
     } catch (error) {
-      console.log(error);
       return response.status(400).json({
         data: null,
         error: "Create failed",

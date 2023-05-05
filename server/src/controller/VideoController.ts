@@ -95,6 +95,9 @@ export class VideoController {
     try {
       const list = await this.videoRepository.find({
         relations: ["user"],
+        where: {
+          status: VideoStatus.Public,
+        },
       });
 
       const shuffledList = list.sort(() => Math.random() - 0.5);
@@ -121,6 +124,7 @@ export class VideoController {
         .createQueryBuilder("video")
         .leftJoinAndSelect("video.user", "user")
         .where("user.id = :userId", { userId })
+        .andWhere("video.status != :status", { status: VideoStatus.Pending })
         .getMany();
 
       return response.status(200).json({
@@ -134,6 +138,7 @@ export class VideoController {
       });
     }
   }
+
   async getVideoAndCommentById(
     request: Request & { file: any },
     response: Response,
@@ -154,8 +159,6 @@ export class VideoController {
         error: null,
       });
     } catch (error) {
-      console.log(error);
-
       return response.status(400).json({
         data: null,
         error: "get video failed",

@@ -21,3 +21,15 @@ export async function unfollowUser(me, tiktoker) {
         return [];
     }
 }
+
+export async function checkUserFollowed(me, tiktoker) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/follow/getActiveFollow`, { me, tiktoker });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

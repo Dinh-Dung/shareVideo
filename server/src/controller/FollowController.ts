@@ -54,7 +54,6 @@ export class FollowController {
         error: null,
       });
     } catch (error) {
-      console.log(error);
       return response.status(400).json({
         data: null,
         error: "You can't get follow user",

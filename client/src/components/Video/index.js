@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './video.module.scss';
 import Button from '~/components/Button/Button';
@@ -11,8 +11,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '~/hooks/useAuth';
 import { likeCountOfVideo } from '~/utils/like-api';
 import { getComment } from '~/utils/comment-api';
-import { followUser, unfollowUser } from '~/utils/follow-api';
-import { likeVideo, unlikeVideo } from '~/utils/like-api';
+import { checkUserFollowed, followUser, unfollowUser } from '~/utils/follow-api';
+import { likeVideo, unlikeVideo, userLiked } from '~/utils/like-api';
+import SignIn from '../Auth/SignIn';
 
 const cx = classNames.bind(styles);
 
@@ -46,6 +47,17 @@ const VideoPlayer = ({ video }) => {
             await followUser(user.id, video.user.id);
         }
     };
+    useEffect(() => {
+        (async () => {
+            if (user) {
+                const liked = await userLiked(video.user.id, user.id);
+                setLikeActive(liked);
+
+                const followed = await checkUserFollowed(user.id, video.user.id);
+                setFollowActive(followed);
+            }
+        })();
+    }, [user, video]);
 
     useEffect(() => {
         (async () => {
@@ -63,11 +75,31 @@ const VideoPlayer = ({ video }) => {
             rootMargin: '0px',
             threshold: [0.95],
         };
+        // let handlePlay = (entries, observer) => {
+        //     entries.forEach((entry) => {
+        //         if (entry.isIntersecting) {
+        //             if (videoRef.current) {
+        //                 videoRef.current.play();
+        //             }
+        //         } else {
+        //             if (videoRef.current) {
+        //                 videoRef.current.pause();
+        //             }
+        //         }
+        //     });
+        // };
         let handlePlay = (entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    if (videoRef.current) {
+                    if (videoRef.current && document.visibilityState === 'visible') {
                         videoRef.current.play();
+                    } else {
+                        document.addEventListener('visibilitychange', function onVisibilityChange() {
+                            if (document.visibilityState === 'visible' && videoRef.current) {
+                                videoRef.current.play();
+                                document.removeEventListener('visibilitychange', onVisibilityChange);
+                            }
+                        });
                     }
                 } else {
                     if (videoRef.current) {
@@ -76,6 +108,7 @@ const VideoPlayer = ({ video }) => {
                 }
             });
         };
+
         let observer;
         if (videoRef.current) {
             observer = new IntersectionObserver(handlePlay, options);
@@ -113,7 +146,7 @@ const VideoPlayer = ({ video }) => {
                             <h3 className={cx('video-author_uniqued')}>{video.user.fullname}</h3>
                             <h4 className={cx('video-author_nickname')}>{video.user.nickname}</h4>
                         </Link>
-                        {user ? (
+                        {user && user.id !== video.user.id ? (
                             <Button outlineDanger className={cx('button')} onClick={() => handleClickFollowUser()}>
                                 {!followActive ? 'Follow' : 'Following'}
                             </Button>
@@ -134,6 +167,7 @@ const VideoPlayer = ({ video }) => {
                             src={video.url}
                             controls
                             loop
+                            autoPlay
                             muted={false}
                             style={{ width: '289px', height: '517px' }}
                         ></video>

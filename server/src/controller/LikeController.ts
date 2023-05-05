@@ -18,33 +18,36 @@ export class LikeController {
   async likeVideo(request: Request, response: Response, next: NextFunction) {
     const { userId, videoId } = request.body;
     try {
-      const video = await this.videoRepository.findOneBy({ id: videoId });
-      const user = await this.userRepository.findOneBy({ id: userId });
-
+      const video = await this.videoRepository
+        .createQueryBuilder("video")
+        .where("video.id = :id", { id: videoId })
+        .getOne();
+      const user = await this.userRepository
+        .createQueryBuilder("user")
+        .where("user.id = :id", { id: userId })
+        .getOne();
       if (!video || !user) {
         response.status(404).send("Video or User not found");
         return;
       }
-      const like = await this.likeRepository.findOne({
-        where: {
-          user,
-          video,
-        },
-      });
-
+      const like = await this.likeRepository
+        .createQueryBuilder("like")
+        .where("like.user = :userId", { userId })
+        .andWhere("like.video = :videoId", { videoId })
+        .getOne();
       if (like) {
-        response.status(400).send("User already liked this video");
-        return;
+        // If the user has already liked the video, return a success message
+        return response.status(200).send("Video liked successfully");
       }
+
       const newLike = this.likeRepository.create({
         user: user,
         video: video,
-      }); // tạo một bản ghi mới trong bảng Like
+      });
 
-      await this.likeRepository.save(newLike); // lưu bản ghi mới vào cơ sở dữ liệu
+      await this.likeRepository.save(newLike);
       response.status(200).send("Video liked successfully");
     } catch (error) {
-      console.log(error);
       return response.status(404).json({
         data: null,
         error: "You can't like video",

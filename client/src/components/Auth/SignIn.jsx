@@ -119,7 +119,7 @@ const SignIn = () => {
                             <input
                                 type="password"
                                 placeholder="Password"
-                                name="username"
+                                name="password"
                                 className={cx('input-password')}
                                 onChange={handlePassword}
                             />

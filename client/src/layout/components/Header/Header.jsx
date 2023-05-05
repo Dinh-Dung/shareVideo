@@ -92,6 +92,7 @@ const Header = () => {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: 'Log out',
             separate: true,
+            type: 'logout',
             onclick: signOut,
         },
     ];
