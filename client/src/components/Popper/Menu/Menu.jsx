@@ -25,10 +25,12 @@ function Menu({ children, items = [], hideOnClick = false, onChange = defaultFn 
                     onClick={() => {
                         if (isParent) {
                             setHistory((prev) => [...prev, item.children]);
+                            item.onClick();
                         } else {
                             onChange(item);
                         }
                     }}
+                    // onClick={() => item.onClick()}
                 />
             );
         });

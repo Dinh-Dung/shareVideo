@@ -66,12 +66,12 @@ export class CommentController {
     response: Response,
     next: NextFunction
   ) {
-    const commentId = request.body;
     try {
-      // const comment = await this.commentRepository.findOneBy({
-      //   comment: { id: commentId },
+      // const video = await this.videoRepository.findOne({
+      //   where: { id: userId },
+      //   relations: ["users"],
       // });
-      // await this.commentRepository.remove(comment);
+
       return response.status(200).send("Delete comment successfully");
     } catch (error) {
       console.log(error);

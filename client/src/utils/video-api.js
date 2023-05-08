@@ -10,3 +10,14 @@ export async function getVideoAndCommentById(id) {
         return [];
     }
 }
+export async function getVideoToday() {
+    try {
+        const { data, error } = await axios.get(`http://localhost:8080/video/getVideoToday`);
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

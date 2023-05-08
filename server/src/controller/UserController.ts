@@ -3,13 +3,24 @@ import { NextFunction, Request, Response } from "express";
 import { Users } from "../entity/User";
 import { genSalt, hash, compare } from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import { Follow } from "../entity/Follow";
+import { Equal } from "typeorm";
+import { Like } from "../entity/Like";
 
 export class UserController {
-  constructor(private userRepository = AppDataSource.getRepository(Users)) {
+  constructor(
+    private userRepository = AppDataSource.getRepository(Users),
+    private followRepository = AppDataSource.getRepository(Follow),
+    private likeRepository = AppDataSource.getRepository(Like)
+  ) {
     this.login = this.login.bind(this);
     this.register = this.register.bind(this);
     this.getProfile = this.getProfile.bind(this);
     this.getAllUser = this.getAllUser.bind(this);
+    this.getUserFollowers = this.getUserFollowers.bind(this);
+    this.randomUsersSuggest = this.randomUsersSuggest.bind(this);
+    this.getProfileAndVideoByNickname =
+      this.getProfileAndVideoByNickname.bind(this);
   }
 
   async login(request: Request, response: Response, next: NextFunction) {
@@ -108,6 +119,81 @@ export class UserController {
       });
     } catch (error) {
       return response.sendStatus(403);
+    }
+  }
+  async getUserFollowers(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const userId = request.params.userId;
+    try {
+      const followers = await this.followRepository.find({
+        where: {
+          me: Equal(userId),
+        },
+        relations: ["tiktoker"], // eager load the tiktoker relationship to avoid N+1 queries
+      });
+      return response.status(200).json({
+        data: followers,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "get follower failed",
+      });
+    }
+  }
+  async randomUsersSuggest(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const randomUsers = await this.userRepository
+        .createQueryBuilder("user")
+        .leftJoin("user.video", "video")
+        .select(["user", "COUNT(video.id) as video_count"])
+        .where("user.username <> 'Admin'")
+        .groupBy("user.id")
+        .orderBy("video_count", "DESC")
+        .limit(5)
+        .getRawMany();
+      return response.status(200).json({
+        data: randomUsers,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "Failed to get random users",
+      });
+    }
+  }
+  async getProfileAndVideoByNickname(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const nickname = request.params.nickname;
+    try {
+      const userWithVideos = await this.userRepository.findOne({
+        where: {
+          nickname: nickname,
+        },
+        relations: ["video"],
+      });
+
+      return response.status(200).json({
+        data: userWithVideos,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "Failed to get random users",
+      });
     }
   }
 }

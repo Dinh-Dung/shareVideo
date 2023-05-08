@@ -13,7 +13,6 @@ import { likeCountOfVideo } from '~/utils/like-api';
 import { getComment } from '~/utils/comment-api';
 import { checkUserFollowed, followUser, unfollowUser } from '~/utils/follow-api';
 import { likeVideo, unlikeVideo, userLiked } from '~/utils/like-api';
-import SignIn from '../Auth/SignIn';
 
 const cx = classNames.bind(styles);
 
@@ -47,6 +46,7 @@ const VideoPlayer = ({ video }) => {
             await followUser(user.id, video.user.id);
         }
     };
+
     useEffect(() => {
         (async () => {
             if (user) {
@@ -127,22 +127,31 @@ const VideoPlayer = ({ video }) => {
             navigate(`/comment?videoId=${video.id}`);
         }
     };
+    const handleClickAvatar = () => {
+        if (user) {
+            navigate(`/profile?nickname=${video.user.nickname}`);
+        }
+    };
 
     return (
         <div className={cx('list_item-container')}>
-            <Link to={config.routes.profile}>
-                <div className={cx('avatar-user')} style={{ width: '56px', height: '56px' }}>
-                    <Link className={cx('browse-user-avatar')}>
+            <div>
+                <div
+                    className={cx('avatar-user')}
+                    style={{ width: '56px', height: '56px' }}
+                    onClick={handleClickAvatar}
+                >
+                    <div className={cx('browse-user-avatar')}>
                         <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
                             <span>{video.user.fullname[0]}</span>
                         </div>
-                    </Link>
+                    </div>
                 </div>
-            </Link>
+            </div>
             <div className={cx('content-container')}>
                 <div className={cx('content-info')}>
                     <div className={cx('author')}>
-                        <Link to={config.routes.profile} className={cx('author-container')}>
+                        <Link className={cx('author-container')}>
                             <h3 className={cx('video-author_uniqued')}>{video.user.fullname}</h3>
                             <h4 className={cx('video-author_nickname')}>{video.user.nickname}</h4>
                         </Link>
@@ -151,12 +160,14 @@ const VideoPlayer = ({ video }) => {
                                 {!followActive ? 'Follow' : 'Following'}
                             </Button>
                         ) : (
-                            <Button outlineDanger className={cx('button-close')}>
-                                Follow
-                            </Button>
+                            // <Button outlineDanger className={cx('button-close')}>
+                            //     Follow
+                            // </Button>
+                            <></>
                         )}
                     </div>
                 </div>
+
                 <div className={cx('span-text')}>
                     <span>{video ? video.description : ''}</span>
                 </div>

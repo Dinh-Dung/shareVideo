@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots, faClose, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
@@ -10,36 +9,57 @@ import { useState, useEffect } from 'react';
 import { getVideoAndCommentById } from '~/utils/video-api';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-// import { likeCountOfVideo } from '~/utils/like-api';
+import { Comment } from '~/utils/comment-api';
 
 const cx = classNames.bind(styles);
 function Comments() {
     const [video, setVideo] = useState(null);
+    const [commentText, setCommentText] = useState('');
+    const [comments, setComments] = useState([]);
     const { user } = useAuth();
+    // eslint-disable-next-line no-unused-vars
     let [searchParams, setSearchParams] = useSearchParams();
-    // const [likeOfVideo, setLikeOfVideo] = useState(0);
 
     const navigate = useNavigate();
     const handleCloseClick = () => {
         navigate('/');
     };
+
     useEffect(() => {
         (async () => {
-            const List = await getVideoAndCommentById(searchParams.get(`videoId`));
-            setVideo(List);
+            const list = await getVideoAndCommentById(searchParams.get(`videoId`));
+            setVideo(list);
+            setComments(list.comment);
         })();
     }, []);
-    // useEffect(() => {
-    //     (async () => {
-    //         // count like
-    //         const getLikeCountOfVideo = await likeCountOfVideo(video.id);
-    //         setLikeOfVideo(getLikeCountOfVideo);
-    //     })();
-    // }, [video]);
+
+    const handleSubmitComment = async (e) => {
+        e.preventDefault();
+
+        try {
+            await Comment(user.id, video.id, commentText);
+
+            const commentData = [
+                ...comments,
+                {
+                    comment: commentText,
+                    id: comments[comments.length - 1].id + 1,
+                    create_at: new Date().toISOString(),
+                    user: user,
+                },
+            ];
+
+            setComments(commentData);
+            setCommentText('');
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     if (!user || video === null) {
         return <h1>doi cho</h1>;
     }
-
+    console.log(comments);
     return (
         <div className={cx('wrapper')}>
             <button className={cx('close-btn')} onClick={handleCloseClick}>
@@ -55,18 +75,12 @@ function Comments() {
                 </div>
                 <div className={cx('content-container')}>
                     <div className={cx('info-container')}>
-                        <a href="" className={cx('browse-user-avatar')}>
+                        <Link href="" className={cx('browse-user-avatar')}>
                             <div className={cx('user-avatar')} style={{ width: '40px', height: '40px' }}>
-                                <span>
-                                    <img
-                                        className={cx('img-avatar')}
-                                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/26737cb2c2c15a8f733db60a9b2b32e4~c5_100x100.jpeg?x-expires=1681610400&x-signature=eQ2%2B%2F%2F%2FqMSpRdin%2B6BjR3CLF0u4%3D"
-                                        alt=""
-                                    />
-                                </span>
+                                <span>{video.user.fullname[0]}</span>
                             </div>
-                        </a>
-                        <a href="" className={cx('browse-user-info')}>
+                        </Link>
+                        <Link href="" className={cx('browse-user-info')}>
                             <span className={cx('browse-user')}>{video.user.nickname}</span>
                             <br />
                             <span className={cx('browse-nickname')}>
@@ -74,7 +88,7 @@ function Comments() {
                                 <span style={{ margin: '0px 4px' }}>.</span>
                                 <span>{video.user.created_at.slice(0, 10)}</span>
                             </span>
-                        </a>
+                        </Link>
                         {/* <button type="button" className={cx('btn-follow')}>
                             Follow
                         </button> */}
@@ -96,35 +110,35 @@ function Comments() {
                                             style={{ width: '18px', height: '18px' }}
                                         />
                                     </span>
-                                    <strong className={cx('comment-count')}>{video.comment.length}</strong>
+                                    <strong className={cx('comment-count')}>{comments.length}</strong>
                                 </button>
                             </div>
                             <div className={cx('share-group')}>
-                                <a href="">
+                                <Link href="">
                                     <Code />
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href="">
                                     <Telegram />
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href="">
                                     <FaceBook />
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href="">
                                     <WhatsApp />
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href="">
                                     <Twitter />
-                                </a>
-                                <a href="">
+                                </Link>
+                                <Link href="">
                                     <Share />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
                     <div className={cx('comment-list')}>
                         <div className={cx('comment-list-content')}>
-                            {video.comment.map((comment, id) => (
-                                <div className={cx('info-user-container')} key={id}>
+                            {comments.map((comment, id) => (
+                                <div className={cx('info-user-container')} key={`user_${id}`}>
                                     <Link className={cx('browse-user-avatar')}>
                                         <div className={cx('user-avatar')} style={{ width: '40px', height: '40px' }}>
                                             <span>{comment.user.fullname[0]}</span>
@@ -145,16 +159,24 @@ function Comments() {
                             ))}
                         </div>
                     </div>
-                    <div className={cx('bottom-comment-container')}>
-                        <div className={cx('comment-container')}>
-                            <div className={cx('input-write-content')}>
-                                <input type="text" placeholder="Add comment..." style={{ width: '432px' }} />
+                    <form onSubmit={handleSubmitComment}>
+                        <div className={cx('bottom-comment-container')}>
+                            <div className={cx('comment-container')}>
+                                <div className={cx('input-write-content')}>
+                                    <input
+                                        type="text"
+                                        placeholder="Add comment..."
+                                        style={{ width: '432px' }}
+                                        value={commentText}
+                                        onChange={(e) => setCommentText(e.target.value)}
+                                    />
+                                </div>
                             </div>
+                            <button type="submit" className={cx('submit')}>
+                                Post
+                            </button>
                         </div>
-                        <button type="submit" className={cx('submit')}>
-                            Post
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

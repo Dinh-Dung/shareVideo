@@ -10,3 +10,18 @@ export async function getComment(id) {
         return [];
     }
 }
+export async function Comment(userId, videoId, commentText) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/comment/commentVideo`, {
+            userId,
+            videoId,
+            commentText,
+        });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

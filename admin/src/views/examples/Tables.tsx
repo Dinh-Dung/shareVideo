@@ -43,19 +43,18 @@ const Tables = () => {
     <>
       <Header />
       {/* Page content */}
-      <Container className="mt--7" fluid>
+      {/* <Container className="mt--7" fluid> */}
         {/* Table */}
-        <Row>
+        {/* <Row>
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
-                <h3 className="mb-0">Card tables</h3>
+                <h3 className="mb-0">Video tables</h3>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Project</th>
-                    <th scope="col">Budget</th>
+                    <th scope="col">Video</th>
                     <th scope="col">Status</th>
                     <th scope="col">Users</th>
                     <th scope="col">Completion</th>
@@ -867,9 +866,9 @@ const Tables = () => {
               </CardFooter>
             </Card>
           </div>
-        </Row>
+        </Row> */}
         {/* Dark table */}
-        <Row className="mt-5">
+        {/* <Row className="mt-5">
           <div className="col">
             <Card className="bg-default shadow">
               <CardHeader className="bg-transparent border-0">
@@ -1639,8 +1638,9 @@ const Tables = () => {
               </Table>
             </Card>
           </div>
-        </Row>
-      </Container>
+        </Row> */}
+      {/* </Container> */}
+      
     </>
   );
 };

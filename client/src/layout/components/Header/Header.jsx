@@ -93,9 +93,10 @@ const Header = () => {
             title: 'Log out',
             separate: true,
             type: 'logout',
-            onclick: signOut,
+            onClick: signOut,
         },
     ];
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>

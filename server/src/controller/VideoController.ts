@@ -30,6 +30,7 @@ export class VideoController {
     this.getVideoList = this.getVideoList.bind(this);
     this.getUserVideoList = this.getUserVideoList.bind(this);
     this.getVideoAndCommentById = this.getVideoAndCommentById.bind(this);
+    this.getVideoToday = this.getVideoToday.bind(this);
   }
 
   async uploadVideo(
@@ -156,6 +157,29 @@ export class VideoController {
 
       return response.status(200).json({
         data: videoById,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "get video failed",
+      });
+    }
+  }
+  async getVideoToday(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const newestVideos = await this.videoRepository
+        .createQueryBuilder("video")
+        .where("video.status = :status", { status: VideoStatus.Public })
+        .orderBy("video.created_at", "DESC")
+        .take(20)
+        .getMany();
+      return response.status(200).json({
+        data: newestVideos,
         error: null,
       });
     } catch (error) {

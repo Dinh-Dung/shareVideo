@@ -33,7 +33,18 @@ router.post("/user/login", userController.login);
 router.post("/user/register", userController.register);
 router.get("/user/getProfile", AuthGuard, userController.getProfile);
 router.get("/user/getAllUser", userController.getAllUser);
-// video
+router.get(
+  "/user/getUserFollowers/:userId",
+  AuthGuard,
+  userController.getUserFollowers
+);
+router.get("/user/randomUsersSuggest", userController.randomUsersSuggest);
+router.get(
+  "/user/getProfileAndVideoByNickname/:nickname",
+  AuthGuard,
+  userController.getProfileAndVideoByNickname
+);
+// video,
 router.post(
   "/video/upload",
   AuthGuard,
@@ -50,6 +61,7 @@ router.get(
   "/video/getVideoAndCommentById/:videoId",
   videoController.getVideoAndCommentById
 );
+router.get("/video/getVideoToday", videoController.getVideoToday);
 // like
 router.post("/like/likeVideo", AuthGuard, likeController.likeVideo);
 router.post("/like/unlike", AuthGuard, likeController.unlikeVideo);
@@ -68,7 +80,11 @@ router.post(
   AuthGuard,
   saveActiveController.getActiveFollow
 );
-
+router.get(
+  "/follow/getVideoFollower/:userId",
+  AuthGuard,
+  followController.getVideoFollower
+);
 //comment
 router.post("/comment/commentVideo", AuthGuard, commentController.commentVideo);
 router.post(

@@ -1,28 +1,37 @@
 import React from 'react';
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import Button from '~/components/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLock, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '~/hooks/useAuth';
 import { getUserVideoList } from '~/utils/upload-api';
+import { getProfileAndVideoByNickname } from '~/utils/user-api';
 
 const cx = classNames.bind(styles);
 const Profile = () => {
     const { user } = useAuth();
+    let [searchParams, setSearchParams] = useSearchParams();
     const [videoUserList, setVideoUserList] = useState([]);
-
+    const [userProfile, setUserProfile] = useState(user);
 
     useEffect(() => {
         (async () => {
-            const List = await getUserVideoList(user.id);
-            setVideoUserList(List);
+            const nickname = searchParams.get(`nickname`);
+            if (!nickname) {
+                const List = await getUserVideoList(user.id);
+                setVideoUserList(List);
+            } else {
+                const profileData = await getProfileAndVideoByNickname(nickname);
+                setVideoUserList(profileData.video);
+                setUserProfile(profileData);
+            }
         })();
     }, []);
 
-    console.log(videoUserList)
     return (
         <>
             <div className={cx('wrapper')}>
@@ -38,8 +47,8 @@ const Profile = () => {
                             </span>
                         </div>
                         <div className={cx('user-title')}>
-                            <h2 className={cx('nickname-user')}>{user ? user.nickname : 'nickname'}</h2>
-                            <h1 className={cx('user-name')}>{user ? user.fullname : 'fullname'}</h1>
+                            <h2 className={cx('nickname-user')}>{userProfile ? userProfile.nickname : 'nickname'}</h2>
+                            <h1 className={cx('user-name')}>{userProfile ? userProfile.fullname : 'fullname'}</h1>
                             <div className={cx('edit-profile')}>
                                 <Button leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}>Edit profile</Button>
                             </div>
@@ -78,25 +87,24 @@ const Profile = () => {
                         <span style={{ marginLeft: '1rem' }}>Public</span>
                     </p>
                 </div>
-                {videoUserList.map((video,id)=>( 
+                {videoUserList.map((video, id) => (
                     <div className={cx('video-column')} key={`video${id}`}>
-                    <div className={cx('user_video-list')}>
-                        <div className={cx('user-video')}>
-                            <div className={cx('content-video')}>
-                                <div className={cx('video')}>
-                                    <video
-                                        controlsList='nofullscreen'
-                                        src={video.url}
-                                        controls
-                                        style={{ width: '328px', height: '384px' }}
-                                    ></video>
+                        <div className={cx('user_video-list')}>
+                            <div className={cx('user-video')}>
+                                <div className={cx('content-video')}>
+                                    <div className={cx('video')}>
+                                        <video
+                                            controlsList="nofullscreen"
+                                            src={video.url}
+                                            controls
+                                            style={{ width: '328px', height: '384px' }}
+                                        ></video>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                    ))
-                }
+                ))}
             </div>
         </>
     );

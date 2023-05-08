@@ -3,18 +3,18 @@ import classNames from 'classnames/bind';
 import PropTypes from 'prop-types';
 
 import styles from './SuggestedAccounts.module.scss';
-import AccountItem from './AccountItem';
+import FollowingItem from './FollowingItem';
 const cx = classNames.bind(styles);
-const SuggestedAccounts = ({ label }) => {
+const FollowingAccounts = ({ label }) => {
     return (
         <div className={cx('wrapper')}>
             <p className={cx('label')}>{label}</p>
-            <AccountItem />
+            <FollowingItem />
             <p className={cx('more-btn')}>See all</p>
         </div>
     );
 };
-SuggestedAccounts.propTypes = {
+FollowingAccounts.propTypes = {
     label: PropTypes.string.isRequired,
 };
-export default SuggestedAccounts;
+export default FollowingAccounts;
