@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faCake } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react/headless';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Wrapper as PopperWrapper } from '../Popper';
 import styles from './SuggestedAccounts.module.scss';
@@ -16,7 +17,7 @@ const FollowingItem = () => {
     const { user } = useAuth();
     const [followingAcounts, setFollowingAcounts] = useState([]);
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     useEffect(() => {
         (async () => {
             if (user) {
@@ -25,24 +26,20 @@ const FollowingItem = () => {
             }
         })();
     }, [user]);
-    const renderPreview = (props) => {
+    const renderPreview = (user) => {
         return (
-            <div tabIndex="-1" {...props}>
+            <div tabIndex="-1">
                 <PopperWrapper>
-                    {/* {followingAcounts.map((user, id) => (
-                        <FollowingPreview user={user} key={`user_${id}`} />
-                    ))} */}
-                    <></>
+                    <FollowingPreview user={user} key={`user_${user.id}`} />
                 </PopperWrapper>
             </div>
         );
     };
-
-    // const handleClickProfile = () => {
-    //     if (user) {
-    //         navigate(`profile?userId=${randomUsers.id}`);
-    //     }
-    // };
+    const handleClickProfile = (user) => {
+        if (user) {
+            navigate(`/profile?nickname=${user.tiktoker.nickname}`);
+        }
+    };
     return (
         <div>
             {followingAcounts.map((user, id) => (
@@ -51,10 +48,10 @@ const FollowingItem = () => {
                     delay={[800, 0]}
                     offset={[-20, 0]}
                     placement="bottom"
-                    render={renderPreview}
+                    render={() => renderPreview(user)}
                     key={id}
                 >
-                    <div className={cx('account-item')}>
+                    <div className={cx('account-item')} onClick={() => handleClickProfile(user)}>
                         <Link className={cx('browse-user-avatar')}>
                             <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
                                 <span>{user.tiktoker.fullname[0]}</span>

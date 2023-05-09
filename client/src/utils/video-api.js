@@ -21,3 +21,14 @@ export async function getVideoToday() {
         return [];
     }
 }
+export async function getVideoFollower(id) {
+    try {
+        const { data, error } = await axios.get(`http://localhost:8080/video/getVideoFollower/${id}`);
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

@@ -25,6 +25,7 @@ export default function AuthProvider({ children }) {
 
     const signOut = async () => {
         Cookies.remove('refresh_token');
+        axios.defaults.headers.common.Authorization = ``;
         setAccessToken(null);
         setUser(null);
         navigate('/');

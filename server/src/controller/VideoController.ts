@@ -4,8 +4,7 @@ import { Video, VideoStatus } from "../entity/Video";
 import { AppDataSource } from "../data-source";
 import { Users } from "../entity/User";
 import { Category } from "../entity/Category";
-import { Equal } from "typeorm";
-import { Comment } from "../entity/Comment";
+import { Follow } from "../entity/Follow";
 
 // Configuration
 cloudinary.config({
@@ -24,13 +23,15 @@ export class VideoController {
   constructor(
     private videoRepository = AppDataSource.getRepository(Video),
     private userRepository = AppDataSource.getRepository(Users),
-    private categoryRepository = AppDataSource.getRepository(Category)
+    private categoryRepository = AppDataSource.getRepository(Category),
+    private followRepository = AppDataSource.getRepository(Follow)
   ) {
     this.uploadVideo = this.uploadVideo.bind(this);
     this.getVideoList = this.getVideoList.bind(this);
     this.getUserVideoList = this.getUserVideoList.bind(this);
     this.getVideoAndCommentById = this.getVideoAndCommentById.bind(this);
     this.getVideoToday = this.getVideoToday.bind(this);
+    this.getVideoFollower = this.getVideoFollower.bind(this);
   }
 
   async uploadVideo(
@@ -186,6 +187,36 @@ export class VideoController {
       return response.status(400).json({
         data: null,
         error: "get video failed",
+      });
+    }
+  }
+  async getVideoFollower(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const userId = request.params.userId;
+    try {
+      const videoFollower = await this.followRepository
+        .createQueryBuilder("follow")
+        .leftJoinAndSelect("follow.tiktoker", "user")
+        .where("follow.me.id = :userId", { userId })
+        .getMany();
+      const followedUserIds = videoFollower.map((follow) => follow.tiktoker.id);
+      const videos = await this.videoRepository
+        .createQueryBuilder("video")
+        .leftJoinAndSelect("video.user", "user")
+        .whereInIds(followedUserIds)
+        .getMany();
+      return response.status(200).json({
+        data: videos,
+        error: null,
+      });
+    } catch (error) {
+      console.log(error);
+      return response.status(400).json({
+        data: null,
+        error: "You can't get videoFollower",
       });
     }
   }

@@ -1,6 +1,7 @@
 .wrapper {
     width: 320px;
     padding: 20px;
+    cursor: pointer;
 }
 
 .header {
@@ -126,4 +127,9 @@
         height: 100%;
         object-fit: cover;
     }
+}
+.check1 {
+    margin-left: 4px;
+    font-size: 1.4rem;
+    color: white;
 }

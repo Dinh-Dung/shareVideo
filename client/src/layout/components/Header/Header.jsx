@@ -14,17 +14,16 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import styles from './Header.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import config from '~/config';
 import images from '~/asssets/images';
 import Button from '~/components/Button/Button';
 import Menu from '~/components/Popper/Menu/Menu';
-import { InboxIcon, MessageIcon, UploadIcon } from '~/components/Icons';
-import Image from '~/components/Image';
+import { UploadIcon } from '~/components/Icons';
 import Search from '../Search';
-import SignIn from '~/components/Auth/SignIn';
 import { useAuth } from '~/hooks/useAuth';
+import AuthModal from '~/components/Auth/Auth';
 
 const cx = classNames.bind(styles);
 
@@ -60,32 +59,24 @@ const MENU_ITEMS = [
 ];
 
 const Header = () => {
-    // const handleMenuChange = (menuItem) => {
-    //     switch (menuItem.type) {
-    //         case 'language':
-    //             break;
-    //         default:
-    //     }
-    // };
-
-    const profileRoutes = config.routes.profile;
-    const uploadRoutes = config.routes.login;
     const { user, signOut } = useAuth();
+    const navigate = useNavigate();
+
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
             title: 'View profile',
-            to: `${profileRoutes}`,
+            onClick: () => navigate(`/profile?nickname=${user.nickname}`),
         },
         {
             icon: <FontAwesomeIcon icon={faCoins} />,
             title: 'Get coins',
-            to: '/coin',
+            onClick: () => navigate('/coin'),
         },
         {
             icon: <FontAwesomeIcon icon={faGear} />,
             title: 'Settings',
-            to: '/settings',
+            onClick: () => navigate('/settings'),
         },
         ...MENU_ITEMS,
         {
@@ -101,7 +92,7 @@ const Header = () => {
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link to={config.routes.home} className={cx('logo-link')}>
-                    <img src={images.logo} alt="No images" />
+                    <img src="logo2.png" alt="No images" />
                 </Link>
                 <Search />
                 <div className={cx('actions')}>
@@ -129,27 +120,26 @@ const Header = () => {
                     ) : (
                         <>
                             <Link>
-                                <Button primary>
-                                    {' '}
-                                    <SignIn />
-                                </Button>
+                                <AuthModal />
                             </Link>
                         </>
                     )}
 
-                    <Menu items={!user ? MENU_ITEMS : userMenu}>
-                        {!user ? (
+                    {user ? (
+                        <Menu items={userMenu}>
+                            <div className={cx('user-avatar')} style={{ width: '40px', height: '40px' }}>
+                                <span>{user.fullname[0]}</span>
+                            </div>
+                        </Menu>
+                    ) : (
+                        <Menu items={MENU_ITEMS}>
                             <Tippy>
                                 <button className={cx('more-btn')}>
                                     <FontAwesomeIcon icon={faEllipsisVertical} />
                                 </button>
                             </Tippy>
-                        ) : (
-                            <div className={cx('user-avatar')} style={{ width: '40px', height: '40px' }}>
-                                <span>{user.fullname[0]}</span>
-                            </div>
-                        )}
-                    </Menu>
+                        </Menu>
+                    )}
                 </div>
             </div>
         </header>

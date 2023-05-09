@@ -5,16 +5,11 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
-import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 
 import classNames from 'classnames/bind';
 import styles from './SignIn.module.scss';
 import Button from '~/components/Button/Button';
-import config from '~/config';
-import SignUp from './SignUp';
 import { useAuth } from '~/hooks/useAuth';
-import AccountItem from '../SuggestedAccounts/AccountItem';
 
 const cx = classNames.bind(styles);
 const customStyles = {
@@ -30,25 +25,12 @@ const customStyles = {
 };
 
 Modal.setAppElement('#root');
-const SignIn = () => {
-    const { signIn, accessToken } = useAuth();
-    const [modalIsOpen, setIsOpen] = useState(false);
+const SignIn = ({ changeModalMode, modalIsOpen, closeModal }) => {
+    const { signIn } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [message, setMessage] = useState('');
-
-    useEffect(() => {
-        if (accessToken) {
-            setIsOpen(false);
-        }
-    }, [accessToken]);
-    function openModal() {
-        setIsOpen(true);
-    }
-    function closeModal() {
-        setIsOpen(false);
-    }
 
     function afterOpenModal() {
         // references are now sync'd and can be accessed.
@@ -66,10 +48,10 @@ const SignIn = () => {
 
     const handleSubmit = async (e) => {
         setIsLoggingIn(true);
-        setMessage('');
         e.preventDefault();
 
         const data = await signIn(username, password);
+        setMessage('Login success');
         if (!data) {
             setMessage('Username or password incorrect !');
             setIsLoggingIn(false);
@@ -79,7 +61,6 @@ const SignIn = () => {
 
     return (
         <div>
-            {accessToken ? <AccountItem /> : <span onClick={openModal}>Log In</span>}
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -140,9 +121,7 @@ const SignIn = () => {
                 </div>
                 <div className={cx('footer-login')}>
                     <div className={cx('bottom-text')}>Don’t have an account?</div>
-                    <Link>
-                        <SignUp></SignUp>
-                    </Link>
+                    <span onClick={changeModalMode}>Sign Up</span>
                 </div>
             </Modal>
         </div>

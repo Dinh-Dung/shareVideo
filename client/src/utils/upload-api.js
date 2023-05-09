@@ -1,41 +1,38 @@
-import axios from "axios";
+import axios from 'axios';
 
 export async function uploadVideoToCloud(formData) {
     try {
-        const { data } = await axios.post(`http://localhost:8080/video/upload`,
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            }
-        )
+        const { data } = await axios.post(`http://localhost:8080/video/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
-        return data
+        return data;
     } catch (error) {
-        return null
+        return null;
     }
 }
 
-export  async function getVideoList() {
+export async function getVideoList() {
     try {
-        const { data, error } = await axios.get("http://localhost:8080/video/getList")
+        const { data, error } = await axios.get('http://localhost:8080/video/getList');
 
-        if (!data || error) throw new Error()
+        if (!data || error) throw new Error();
 
-        return data.data
+        return data.data;
     } catch (error) {
-        return []
+        return [];
     }
 }
-export  async function getUserVideoList(id) {
+export async function getUserVideoList(id) {
     try {
-        const { data, error } = await axios.get(`http://localhost:8080/video/getUserVideoList/${id}`)
+        const { data, error } = await axios.get(`http://localhost:8080/video/getUserVideoList/${id}`);
 
-        if (!data || error) throw new Error()
+        if (!data || error) throw new Error();
 
-        return data.data
+        return data.data;
     } catch (error) {
-        return []
+        return [];
     }
 }

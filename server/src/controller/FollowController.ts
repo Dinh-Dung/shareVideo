@@ -13,7 +13,6 @@ export class FollowController {
     this.followUser = this.followUser.bind(this);
     this.getFollowUser = this.getFollowUser.bind(this);
     this.unfollowUser = this.unfollowUser.bind(this);
-    this.getVideoFollower = this.getVideoFollower.bind(this);
   }
   async followUser(request: Request, response: Response, next: NextFunction) {
     const { me, tiktoker } = request.body;
@@ -79,36 +78,6 @@ export class FollowController {
       return response.status(400).json({
         data: null,
         error: "You can't unlike follow user",
-      });
-    }
-  }
-  async getVideoFollower(
-    request: Request,
-    response: Response,
-    next: NextFunction
-  ) {
-    const userId = request.params.userId;
-    try {
-      const videoFollower = await this.followRepository
-        .createQueryBuilder("follow")
-        .leftJoinAndSelect("follow.tiktoker", "user")
-        .where("follow.me.id = :userId", { userId })
-        .getMany();
-      const followedUserIds = videoFollower.map((follow) => follow.tiktoker.id);
-      const videos = await this.videoRepository
-        .createQueryBuilder("video")
-        .leftJoinAndSelect("video.user", "user")
-        .whereInIds(followedUserIds)
-        .getMany();
-      return response.status(200).json({
-        data: videos,
-        error: null,
-      });
-    } catch (error) {
-      console.log(error);
-      return response.status(400).json({
-        data: null,
-        error: "You can't get videoFollower",
       });
     }
   }

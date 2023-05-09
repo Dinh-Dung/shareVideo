@@ -215,6 +215,7 @@ button.btn-follow {
         line-height: 22px;
         word-break: break-word;
         font-weight: 400;
+        margin-right: 10px;
     }
 }
 .center-row {
@@ -256,6 +257,19 @@ button.btn-follow {
             background-color: rgba(22, 24, 35, 0.06);
             padding: 6px;
             margin-right: 6px;
+        }
+        span.span-icon_like-active {
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            transition: all 200ms ease-in-out 0s;
+            background-color: rgba(22, 24, 35, 0.06);
+            margin-top: 8px;
+            margin-bottom: 6px;
         }
     }
     strong {

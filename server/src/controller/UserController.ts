@@ -21,6 +21,7 @@ export class UserController {
     this.randomUsersSuggest = this.randomUsersSuggest.bind(this);
     this.getProfileAndVideoByNickname =
       this.getProfileAndVideoByNickname.bind(this);
+    this.refreshToken = this.refreshToken.bind(this);
   }
 
   async login(request: Request, response: Response, next: NextFunction) {
@@ -45,14 +46,20 @@ export class UserController {
         { expiresIn: "1h" }
       );
 
+      const refreshToken = jwt.sign(
+        { userId: user.id, username: user.username },
+        process.env.JWT_SECRET,
+        { expiresIn: "30d" }
+      );
+
       return response.status(200).json({
         data: {
           access_token: accessToken,
+          refresh_token: refreshToken,
         },
         error: null,
       });
     } catch (error) {
-      console.log();
       return response.status(401).json({
         data: null,
         error: "Username or password is not valid !",
@@ -61,10 +68,36 @@ export class UserController {
     }
   }
 
+  async refreshToken(request: Request, response: Response) {
+    try {
+      const refreshToken = request.query["token"];
+
+      const isValid = await jwt.verify(refreshToken, process.env.JWT_SECRET);
+
+      const accessToken = jwt.sign(
+        { userId: isValid.id, username: isValid.username },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      return response.status(200).json({
+        data: {
+          access_token: accessToken,
+        },
+        error: null,
+      });
+    } catch (error) {
+      return response.status(401).json({
+        data: null,
+        error: "Token is not valid !",
+        status: 401,
+      });
+    }
+  }
+
   async register(request: Request, response: Response, next: NextFunction) {
     try {
-      const { fullname, username, nickname, password, email, address } =
-        request.body;
+      const { fullname, username, password, email, address } = request.body;
 
       // Hasing password
       const saltRounds = 10;

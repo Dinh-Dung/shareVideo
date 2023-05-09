@@ -2,28 +2,39 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 import styles from './AccountPreview.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 const AccountPreview = ({ user }) => {
+    const navigate = useNavigate();
+
+    const handleClickProfile = () => {
+        if (user) {
+            navigate(`/profile?nickname=${user.user_nickname}`);
+        }
+    };
     return (
         <>
             <div className={cx('wrapper')}>
                 <div className={cx('header')}>
-                    <img
-                        className={cx('avatar')}
-                        src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/ddb79ba3ebe90e10e946791203de6c5d~c5_100x100.jpeg?x-expires=1680368400&x-signature=6NX9U8YX9%2BpEzDbtICOlM1u7Bd8%3D"
-                        alt=""
-                    />
+                    <Link to={`/profile?nickname=${user.user_nickname}`} className={cx('browse-user-avatar')}>
+                        <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
+                            <span>{user.user_fullname[0]}</span>
+                        </div>
+                    </Link>
                 </div>
                 <div className={cx('body')}>
-                    <p className={cx('nickname')}>
+                    <p className={cx('nickname')} onClick={handleClickProfile}>
                         <strong>{user ? user.user_nickname : 'nickname'}</strong>
                         <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />
                     </p>
-                    <p className={cx('name')}>{user ? user.user_fullname : 'fullname'}</p>
-                    <p className={cx('analytics')}>
+                    <p className={cx('name')} onClick={handleClickProfile}>
+                        {user ? user.user_fullname : 'fullname'}
+                    </p>
+                    <p className={cx('analytics')} onClick={handleClickProfile}>
                         <strong className={cx('value')}>6.7M</strong>
                         <span className={cx('label')}>Followers</span>
                         <strong className={cx('value')}>6.7M</strong>

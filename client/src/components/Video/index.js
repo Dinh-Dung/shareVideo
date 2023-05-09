@@ -69,25 +69,12 @@ const VideoPlayer = ({ video }) => {
             setCommentOfVideo(getCommentOfVideo);
         })();
     }, [video.id]);
-
     useEffect(() => {
         let options = {
             rootMargin: '0px',
             threshold: [0.95],
         };
-        // let handlePlay = (entries, observer) => {
-        //     entries.forEach((entry) => {
-        //         if (entry.isIntersecting) {
-        //             if (videoRef.current) {
-        //                 videoRef.current.play();
-        //             }
-        //         } else {
-        //             if (videoRef.current) {
-        //                 videoRef.current.pause();
-        //             }
-        //         }
-        //     });
-        // };
+
         let handlePlay = (entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -151,7 +138,7 @@ const VideoPlayer = ({ video }) => {
             <div className={cx('content-container')}>
                 <div className={cx('content-info')}>
                     <div className={cx('author')}>
-                        <Link className={cx('author-container')}>
+                        <Link to={`/profile?nickname=${video.user.nickname}`} className={cx('author-container')}>
                             <h3 className={cx('video-author_uniqued')}>{video.user.fullname}</h3>
                             <h4 className={cx('video-author_nickname')}>{video.user.nickname}</h4>
                         </Link>

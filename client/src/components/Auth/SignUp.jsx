@@ -5,13 +5,10 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 
 import classNames from 'classnames/bind';
 import styles from './SignUp.module.scss';
 import Button from '~/components/Button/Button';
-import SignIn from './SignIn';
-
 import { signUp } from '~/utils/auth-api';
 
 const cx = classNames.bind(styles);
@@ -27,24 +24,16 @@ const customStyles = {
     },
 };
 Modal.setAppElement('#root');
-const SignUp = () => {
-    const [modalIsOpen, setIsOpen] = useState(false);
+const SignUp = ({ changeModalMode, modalIsOpen, closeModal }) => {
     const [newUser, setNewUser] = useState({
         fullname: '',
         username: '',
         password: '',
         confirmPassword: '',
     });
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
-    function openModal() {
-        setIsOpen(true);
-    }
-    function closeModal() {
-        setIsOpen(false);
-    }
     const handleFormChange = (e) => {
         const { name, value } = e.target;
         setNewUser((prevS) => ({
@@ -76,11 +65,11 @@ const SignUp = () => {
             return;
         }
 
+        changeModalMode('login');
         setLoading(false);
     };
     return (
         <div>
-            <span onClick={openModal}>Sign Up</span>
             <Modal
                 isOpen={modalIsOpen}
                 onAfterOpen={afterOpenModal}
@@ -165,10 +154,7 @@ const SignUp = () => {
                 </div>
                 <div className={cx('footer-login')}>
                     <div className={cx('bottom-text')}>Already have an account?</div>
-                    <Link>
-                        {/* <span>Login</span> */}
-                        <SignIn onClick={handleSubmit}></SignIn>
-                    </Link>
+                    <span onClick={changeModalMode}>Sign In</span>
                 </div>
             </Modal>
         </div>

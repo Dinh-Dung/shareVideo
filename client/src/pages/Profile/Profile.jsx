@@ -18,10 +18,13 @@ const Profile = () => {
     const [videoUserList, setVideoUserList] = useState([]);
     const [userProfile, setUserProfile] = useState(user);
 
+    const nickname = searchParams.get(`nickname`);
+    console.log(videoUserList);
     useEffect(() => {
         (async () => {
-            const nickname = searchParams.get(`nickname`);
             if (!nickname) {
+                if (!user) return;
+
                 const List = await getUserVideoList(user.id);
                 setVideoUserList(List);
             } else {
@@ -30,7 +33,7 @@ const Profile = () => {
                 setUserProfile(profileData);
             }
         })();
-    }, []);
+    }, [user, nickname]);
 
     return (
         <>

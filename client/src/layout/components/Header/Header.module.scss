@@ -21,11 +21,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--default-layout-horizontal-spacer);
+    padding: 0 34px;
 }
 
 .logo-link {
-    display: flex;
+    // display: flex;
+    img {
+        width: 143px;
+    }
 }
 .more-btn {
     font-size: 2rem;
