@@ -33,7 +33,7 @@ export class SaveActive {
         .getOne();
 
       if (!video || !user) {
-        response.status(404).send("Video or User not found");
+        return response.status(404).send("Video or User not found");
       }
 
       const liked = await this.likeRepository

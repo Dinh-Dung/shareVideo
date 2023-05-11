@@ -19,7 +19,7 @@ const Profile = () => {
     const [userProfile, setUserProfile] = useState(user);
 
     const nickname = searchParams.get(`nickname`);
-    console.log(videoUserList);
+
     useEffect(() => {
         (async () => {
             if (!nickname) {

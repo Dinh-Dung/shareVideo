@@ -26,7 +26,10 @@ export class CommentController {
       comment.comment = commentText;
 
       await this.commentRepository.save(comment);
-      response.status(200).send("Comment successfully");
+      return response.status(200).json({
+        data: comment,
+        error: null,
+      });
     } catch (error) {
       console.log(error);
       return response.status(404).json({
@@ -66,13 +69,22 @@ export class CommentController {
     response: Response,
     next: NextFunction
   ) {
+    const { userId, videoId, commentId } = request.body;
     try {
-      // const video = await this.videoRepository.findOne({
-      //   where: { id: userId },
-      //   relations: ["users"],
-      // });
+      const comment = await this.commentRepository.findOne({
+        where: {
+          id: commentId,
+          video: { id: videoId },
+          user: { id: userId },
+        },
+        relations: ["video", "user"],
+      });
 
-      return response.status(200).send("Delete comment successfully");
+      if (!comment) {
+        throw new Error("Comment not found.");
+      }
+      await this.commentRepository.remove(comment);
+      response.status(200).send("Delete comment successfully");
     } catch (error) {
       console.log(error);
       return response.status(400).json({

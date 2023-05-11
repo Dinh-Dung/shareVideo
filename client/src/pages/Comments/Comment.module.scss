@@ -155,6 +155,7 @@ button.close-btn {
     cursor: pointer;
     background-color: rgba(136, 136, 136, 0.5);
 }
+
 .browse-user-info {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -176,6 +177,15 @@ button.close-btn {
         align-items: center;
     }
 }
+.more-btn {
+    cursor: pointer;
+    color: #dcdcdc;
+    background-color: transparent;
+    &:hover {
+        color: red;
+    }
+}
+
 button.btn-follow {
     border-width: 1px;
     border-style: solid;
@@ -324,6 +334,7 @@ button.btn-follow {
         font-weight: 700;
         font-size: 18px;
         line-height: 25px;
+        margin-right: 10px;
     }
 }
 span.browse-nickname-comment {

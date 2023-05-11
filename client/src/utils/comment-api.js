@@ -25,3 +25,18 @@ export async function Comment(userId, videoId, commentText) {
         return [];
     }
 }
+export async function deleteComment(userId, videoId, commentId) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/comment/deleteComment`, {
+            userId,
+            videoId,
+            commentId,
+        });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

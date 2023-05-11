@@ -22,7 +22,7 @@ const Following = () => {
             navigate(`/comment?videoId=${videoFollower.id}`);
         }
     };
-    console.log(videoFollower);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('category-list')}>

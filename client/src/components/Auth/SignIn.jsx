@@ -51,7 +51,8 @@ const SignIn = ({ changeModalMode, modalIsOpen, closeModal }) => {
         e.preventDefault();
 
         const data = await signIn(username, password);
-        setMessage('Login success');
+        setMessage('Username or password incorrect !');
+
         if (!data) {
             setMessage('Username or password incorrect !');
             setIsLoggingIn(false);
