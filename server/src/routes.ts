@@ -86,6 +86,10 @@ router.post(
   AuthGuard,
   saveActiveController.getActiveFollow
 );
+router.get(
+  "/follow/getFollowerOfUser/:userId",
+  followController.getFollowerOfUser
+);
 //comment
 router.post("/comment/commentVideo", AuthGuard, commentController.commentVideo);
 router.post(

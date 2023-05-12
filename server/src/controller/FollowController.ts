@@ -13,6 +13,7 @@ export class FollowController {
     this.followUser = this.followUser.bind(this);
     this.getFollowUser = this.getFollowUser.bind(this);
     this.unfollowUser = this.unfollowUser.bind(this);
+    this.getFollowerOfUser = this.getFollowerOfUser.bind(this);
   }
   async followUser(request: Request, response: Response, next: NextFunction) {
     const { me, tiktoker } = request.body;
@@ -78,6 +79,29 @@ export class FollowController {
       return response.status(400).json({
         data: null,
         error: "You can't unlike follow user",
+      });
+    }
+  }
+  async getFollowerOfUser(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) {
+    const userId = Number(request.params.userId);
+    try {
+      const follows = await this.followRepository.find({
+        where: { tiktoker: { id: userId } },
+        relations: ["me"],
+      });
+      const followers = follows.map((follow) => follow.me);
+      return response.status(200).json({
+        data: followers,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "You can't get follow user",
       });
     }
   }

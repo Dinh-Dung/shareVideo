@@ -1,4 +1,4 @@
-.wrapper{
+.wrapper {
     display: flex;
     flex: 1 1 auto;
     padding: 32px 24px;
@@ -7,57 +7,58 @@
     box-sizing: content-box;
     // min-height: calc(100vh - 59px);
 }
-.share-info{
+.share-info {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-.user-avatar{
+.user-avatar {
     position: relative;
     display: flex;
-    
 }
-.span-avatar-user{
+.span-avatar-user {
+    width: 116px;
     display: inline-block;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-feature-settings: "tnum";
+    font-feature-settings: 'tnum';
     position: relative;
     overflow: hidden;
     color: #fff;
     white-space: nowrap;
     text-align: center;
     vertical-align: middle;
-    line-height: 32px;
+    line-height: 120px;
     border-radius: 50%;
     background-color: rgba(136, 136, 136, 0.5);
-    border-color: rgba(22, 24, 35, .12);
+    border-color: rgba(22, 24, 35, 0.12);
     border-width: 0.5px;
     cursor: pointer;
+    font-size: 56px;
 }
-.avatar{
+.avatar {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.counts-info{
+.counts-info {
     display: flex;
     align-items: center;
     margin-top: 22px;
-    color: rgba(18, 18, 18, .75);
+    color: rgba(18, 18, 18, 0.75);
 }
-.number-following{
+.number-following {
     margin-right: 20px;
 }
 
-.user-title{
+.user-title {
     flex: 1 1 0%;
     cursor: pointer;
     overflow: visible;
     margin-left: 20px;
 }
-.nickname-user{
+.nickname-user {
     font-family: SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 700;
     font-size: 32px;
@@ -68,7 +69,7 @@
     text-align: left;
     word-break: break-word;
 }
-.user-name{
+.user-name {
     font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 600;
     font-size: 18px;
@@ -81,18 +82,18 @@
     display: flex;
     align-items: flex-end;
 }
-.edit-profile{
+.edit-profile {
     width: 148px;
     margin: 16px 0px 0px;
     border: 1px solid gray;
     border-radius: 5px;
 }
-.counts-info{
+.counts-info {
     display: flex;
     align-items: center;
     margin-top: 22px;
     color: rgba(18, 18, 18, 0.75);
-    span{
+    span {
         color: rgba(22, 24, 35, 0.75);
         font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
         font-size: 16px;
@@ -100,7 +101,7 @@
         display: inline-block;
         margin-left: 6px;
     }
-    strong{
+    strong {
         color: rgb(22, 24, 35);
         font-family: SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
         font-weight: 600;
@@ -108,15 +109,14 @@
         line-height: 25px;
         direction: ltr;
     }
-    
 }
-.number-following{
+.number-following {
     margin-right: 20px;
 }
-.number-follower{
+.number-follower {
     margin-right: 20px;
 }
-.user-bio{
+.user-bio {
     text-align: left;
     color: rgb(22, 24, 35);
     font-family: ProximaNova, Arial, Tahoma, PingFangSC, sans-serif;
@@ -126,17 +126,17 @@
     white-space: pre-line;
     margin-top: 10px;
 }
-.layout-main{
+.layout-main {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     justify-content: flex-start;
     min-height: 490px;
     align-items: flex-start;
-    min-width: 520px;
+    min-width: 100%;
     position: relative;
 }
-.tab{
+.tab {
     position: relative;
     display: flex;
     flex-direction: row;
@@ -147,13 +147,15 @@
     height: 44px;
     margin-bottom: 8px;
 }
-p.videos-tab, p.public-tab{
-   &:hover{
-    text-decoration: underline;
-   }
+p.videos-tab,
+p.public-tab {
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
-.videos-tab, .public-tab{
+.videos-tab,
+.public-tab {
     font-family: SofiaPro, Arial, Tahoma, PingFangSC, sans-serif;
     font-weight: 600;
     font-size: 18px;
@@ -169,34 +171,39 @@ p.videos-tab, p.public-tab{
     text-align: center;
     color: rgb(22, 24, 35);
 }
-.video-column{
-    width: 100%;
+.video-column {
+    max-width: 100%;
 }
-.user_video{
+.user_video-list {
     display: grid;
-    gap: 24px 16px;
-    grid-template-columns: repeat(auto-fill, minmax(184px, 1fr));
+    grid-gap: 28px 0px;
+    grid-template-columns: repeat(4, 276px);
 }
-.content-video{
+.content-video {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
 }
-
-// video
-.video{
+.video {
     position: relative;
     box-sizing: border-box;
     background-size: cover;
     cursor: pointer;
     border-radius: 8px;
     overflow: hidden;
-    margin-right: 20px;
-    video{
-        display: block;
+    video {
         width: 100%;
         height: 100%;
+        display: block;
         object-fit: cover;
         border-radius: 10px;
+        overflow: hidden;
+        &::placeholder {
+            object-fit: contain;
+            background-color: #f1f1f1;
+        }
+        &:not(:placeholder-shown) {
+            object-fit: cover;
+        }
     }
 }

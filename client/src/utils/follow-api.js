@@ -33,3 +33,14 @@ export async function checkUserFollowed(me, tiktoker) {
         return [];
     }
 }
+export async function getFollowerOfUser(id) {
+    try {
+        const { data, error } = await axios.get(`http://localhost:8080/follow/getFollowerOfUser/${id}`);
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

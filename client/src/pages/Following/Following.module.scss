@@ -17,8 +17,9 @@
 .following-item-list {
     display: grid;
     grid-gap: 28px 0px;
-    grid-template-columns: repeat(3, 300px);
+    grid-template-columns: repeat(4, 276px);
 }
+
 .content-video {
     display: flex;
     flex-direction: row;
@@ -29,11 +30,21 @@
     box-sizing: border-box;
     background-size: cover;
     cursor: pointer;
+    border-radius: 8px;
     overflow: hidden;
     video {
-        display: block;
         width: 100%;
         height: 100%;
+        display: block;
         object-fit: cover;
+        border-radius: 10px;
+        overflow: hidden;
+        &::placeholder {
+            object-fit: contain;
+            background-color: #f1f1f1;
+        }
+        &:not(:placeholder-shown) {
+            object-fit: cover;
+        }
     }
 }

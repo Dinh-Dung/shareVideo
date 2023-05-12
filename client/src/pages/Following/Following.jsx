@@ -31,13 +31,9 @@ const Following = () => {
             <div className={cx('following-item_container')}>
                 <div className={cx('following-item-list')}>
                     {videoFollower.map((video, id) => (
-                        <div className={cx('content-video')} key={id} onClick={handleClickComment}>
+                        <div className={cx('content-video')} key={id} onClick={() => handleClickComment()}>
                             <div className={cx('video')}>
-                                <video
-                                    src={video.url}
-                                    controls
-                                    style={{ width: '282px', height: '517px', borderRadius: '10px' }}
-                                ></video>
+                                <video src={video.url} controls style={{ width: '256px', height: '456px' }}></video>
                             </div>
                         </div>
                     ))}

@@ -1,0 +1,123 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.2
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+// reactstrap components
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardFooter,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Media,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  Progress,
+  Table,
+  Container,
+  Row,
+  UncontrolledTooltip,
+} from "reactstrap";
+// core components
+import React, { useEffect, useState } from "react";
+
+import Header from "../../components/Headers/Header";
+import "./Tables.css";
+import { getPendingVideos } from "../../ultils/video-api";
+
+const Tables = () => {
+  const [pendingVideoList, setPendingVideoList] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const list = await getPendingVideos();
+      setPendingVideoList(list);
+    })();
+  }, []);
+  // console.log(pendingVideoList.map((video) => video.description));
+  return (
+    <>
+      <Header />
+
+      {pendingVideoList.map((video, id) => (
+        <div className={"list_item-container"} key={`video_${id}`}>
+          <div
+            className={"avatar-user"}
+            style={{ width: "56px", height: "56px" }}
+          >
+            <div className={"browse-user-avatar"}>
+              <div
+                className={"user-avatar"}
+                style={{ width: "56px", height: "56px" }}
+              >
+                <span>{video.user.fullname[0]}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className={"content-container"}>
+            <div className={"content-info"}>
+              <div className={"author"}>
+                <div className={"author-container"}>
+                  <h3 className={"video-author_uniqued"}>
+                    {video.user.fullname}
+                  </h3>
+                  <h4 className={"video-author_nickname"}>
+                    {video.user.nickname}
+                  </h4>
+                </div>
+              </div>
+            </div>
+
+            <div className={"span-text"}>
+              <span>{video ? video.description : ""}</span>
+            </div>
+            <div className={"content-video"}>
+              <div className={"video"}>
+                <video
+                  src={video.url}
+                  controls
+                  loop
+                  autoPlay
+                  muted={false}
+                  style={{ width: "100%", height: "456px" }}
+                ></video>
+              </div>
+
+              <div className={"action-item"}>
+                <button type="button" className={"comment"}>
+                  <span className={"icon-check"}>
+                    <i className="fas fa-check text-success mr-3 span-icon_success"></i>
+                  </span>
+                </button>
+                <button type="button" className={"like"}>
+                  <span className="icon-delete">
+                    <i className="ni ni-fat-remove text-danger mr-3 span-icon_danger"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
+
+export default Tables;

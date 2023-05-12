@@ -13,7 +13,13 @@ export const DefaultLayout = ({ children }) => {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            <div className={routes === '/explore' || routes === '/following' ? cx('container1') : cx('container')}>
+            <div
+                className={
+                    routes === '/explore' || routes === '/following' || routes === '/profile'
+                        ? cx('container1')
+                        : cx('container')
+                }
+            >
                 <Sidebar />
                 <div className={cx('content')}>{children}</div>
             </div>

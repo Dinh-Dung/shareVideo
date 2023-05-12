@@ -103,7 +103,7 @@ function Comments() {
                 <div className={cx('video-container')}>
                     <div className={cx('content-video')}>
                         <div className={cx('video')}>
-                            <video src={video.url} controls loop style={{ height: '566px' }}></video>
+                            <video src={video.url} controls loop style={{ width: '100%', height: '566px' }}></video>
                         </div>
                     </div>
                 </div>

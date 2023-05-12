@@ -10,13 +10,18 @@ import { faLock, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '~/hooks/useAuth';
 import { getUserVideoList } from '~/utils/upload-api';
 import { getProfileAndVideoByNickname } from '~/utils/user-api';
-
+import { likeCountOfVideo } from '~/utils/like-api';
+import { getUserFollowers } from '~/utils/user-api';
+import { getFollowerOfUser } from '~/utils/follow-api';
 const cx = classNames.bind(styles);
 const Profile = () => {
     const { user } = useAuth();
     let [searchParams, setSearchParams] = useSearchParams();
     const [videoUserList, setVideoUserList] = useState([]);
     const [userProfile, setUserProfile] = useState(user);
+    const [likeCount, setLikeCount] = useState(0);
+    const [followingAcounts, setFollowingAcounts] = useState(0);
+    const [followerAcount, setFollowerAcount] = useState(0);
 
     const nickname = searchParams.get(`nickname`);
 
@@ -35,6 +40,19 @@ const Profile = () => {
         })();
     }, [user, nickname]);
 
+    useEffect(() => {
+        (async () => {
+            if (user && userProfile) {
+                const getLikeCountOfVideo = await likeCountOfVideo(userProfile.id);
+                setLikeCount(getLikeCountOfVideo);
+                const getFollowingUsers = await getUserFollowers(userProfile.id);
+                setFollowingAcounts(getFollowingUsers);
+
+                const getFollowerUser = await getFollowerOfUser(userProfile.id);
+                setFollowerAcount(getFollowerUser);
+            }
+        })();
+    }, [userProfile]);
     return (
         <>
             <div className={cx('wrapper')}>
@@ -42,11 +60,7 @@ const Profile = () => {
                     <div className={cx('share-info')}>
                         <div className={cx('user-avatar')} style={{ width: '116px', height: '116px' }}>
                             <span className={cx('span-avatar-user')}>
-                                <img
-                                    className={cx('avatar')}
-                                    src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/ddb79ba3ebe90e10e946791203de6c5d~c5_100x100.jpeg?x-expires=1680368400&x-signature=6NX9U8YX9%2BpEzDbtICOlM1u7Bd8%3D"
-                                    alt=""
-                                />
+                                {userProfile ? userProfile?.fullname[0] : 'no img'}
                             </span>
                         </div>
                         <div className={cx('user-title')}>
@@ -59,19 +73,19 @@ const Profile = () => {
                     </div>
                     <h3 className={cx('counts-info')}>
                         <div className={cx('number-following')}>
-                            <strong title="Following">24</strong>
-                            <span datatype="follwing" className={cx('count-follwing')}>
-                                Follwing
+                            <strong title="Following">{followingAcounts.length}</strong>
+                            <span datatype="follwing" className={cx('count-following')}>
+                                Following
                             </span>
                         </div>
                         <div className={cx('number-follower')}>
-                            <strong title="Followers">35</strong>
-                            <span datatype="follower" className={cx('count-follwer')}>
-                                Follwer
+                            <strong title="Followers">{followerAcount.length}</strong>
+                            <span datatype="follower" className={cx('count-follower')}>
+                                Followers
                             </span>
                         </div>
                         <div className={cx('number-like')}>
-                            <strong title="Likes">35</strong>
+                            <strong title="Likes">{likeCount}</strong>
                             <span datatype="likes" className={cx('count-like')}>
                                 Likes
                             </span>
@@ -87,27 +101,26 @@ const Profile = () => {
                     </p>
                     <p className={cx('public-tab')}>
                         <FontAwesomeIcon icon={faLock} />
-                        <span style={{ marginLeft: '1rem' }}>Public</span>
+                        <span style={{ marginLeft: '1rem' }}>Private</span>
                     </p>
                 </div>
-                {videoUserList.map((video, id) => (
-                    <div className={cx('video-column')} key={`video${id}`}>
-                        <div className={cx('user_video-list')}>
-                            <div className={cx('user-video')}>
-                                <div className={cx('content-video')}>
-                                    <div className={cx('video')}>
-                                        <video
-                                            controlsList="nofullscreen"
-                                            src={video.url}
-                                            controls
-                                            style={{ width: '328px', height: '384px' }}
-                                        ></video>
-                                    </div>
+
+                <div className={cx('video-column')}>
+                    <div className={cx('user_video-list')}>
+                        {videoUserList.map((video, id) => (
+                            <div className={cx('content-video')} key={`video${id}`}>
+                                <div className={cx('video')}>
+                                    <video
+                                        controlsList="nofullscreen"
+                                        src={video.url}
+                                        controls
+                                        style={{ width: '256px', height: '456px' }}
+                                    ></video>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
         </>
     );

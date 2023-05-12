@@ -147,9 +147,6 @@ const VideoPlayer = ({ video }) => {
                                 {!followActive ? 'Follow' : 'Following'}
                             </Button>
                         ) : (
-                            // <Button outlineDanger className={cx('button-close')}>
-                            //     Follow
-                            // </Button>
                             <></>
                         )}
                     </div>
@@ -167,7 +164,7 @@ const VideoPlayer = ({ video }) => {
                             loop
                             autoPlay
                             muted={false}
-                            style={{ width: '289px', height: '517px' }}
+                            style={{ width: '100%', height: '456px' }}
                         ></video>
                     </div>
 
