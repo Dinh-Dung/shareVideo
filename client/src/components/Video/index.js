@@ -119,7 +119,6 @@ const VideoPlayer = ({ video }) => {
             navigate(`/profile?nickname=${video.user.nickname}`);
         }
     };
-
     return (
         <div className={cx('list_item-container')}>
             <div>

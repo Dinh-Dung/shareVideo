@@ -27,12 +27,13 @@ import {
   Input,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 // core components
 import UserHeader from "../../components/Headers/UserHeader";
-
+import { useAuth } from "../../hook/useAuth";
 const Profile = () => {
+  const { user, signOut } = useAuth();
   return (
     <>
       <UserHeader />

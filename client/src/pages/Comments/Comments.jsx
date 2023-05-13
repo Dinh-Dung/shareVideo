@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots, faClose, faHeart, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCommentDots, faClose, faHeart, faCircleXmark, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import { Code, Telegram, FaceBook, WhatsApp, Twitter, Share } from '../../components/Icons';
 import { useState, useEffect } from 'react';
@@ -13,6 +13,7 @@ import styles from './Comment.module.scss';
 import { useAuth } from '~/hooks/useAuth';
 import { Comment, deleteComment } from '~/utils/comment-api';
 import { likeVideo, unlikeVideo, userLiked } from '~/utils/like-api';
+import { deleteVideo } from '~/utils/video-api';
 
 const cx = classNames.bind(styles);
 function Comments() {
@@ -90,6 +91,17 @@ function Comments() {
             console.log(error);
         }
     };
+    const deletePendingVideo = async (id) => {
+        try {
+            await deleteVideo(id);
+            const pendingVideoArray = [...video];
+            const updateList = pendingVideoArray.filter((video) => video.id !== id);
+            navigate('/');
+            setVideo(updateList);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     // console.log(comments.map((comment) => comment.id));
     if (!user || video === null) {
         return <h1>doi cho</h1>;
@@ -126,6 +138,13 @@ function Comments() {
                         {/* <button type="button" className={cx('btn-follow')}>
                             Follow
                         </button> */}
+                        {user.id === video.user.id ? (
+                            <button onClick={() => deletePendingVideo(video.id)} style={{ cursor: 'pointer' }}>
+                                <FontAwesomeIcon icon={faTrashCan} style={{ width: '18px', height: '18px' }} />
+                            </button>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className={cx('main-content')}>
                         <span style={{ fontFamily: 'sans-serif' }}>{video.description}</span>

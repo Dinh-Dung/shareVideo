@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { getUser, refreshToken, login, accessToken } from "../ultils/auth-api";
+import { getUser, getAllUser, login, refreshToken } from "../ultils/auth-api";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ export default function AuthProvider({ children }) {
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  let history = useHistory();
+  const history = useHistory();
 
   const signIn = async (username, password) => {
     const { access_token, refresh_token } = await login(username, password);
@@ -25,6 +25,7 @@ export default function AuthProvider({ children }) {
 
   const signOut = async () => {
     Cookies.remove("refresh_token");
+    axios.defaults.headers.common.Authorization = ``;
     setAccessToken(null);
     setUser(null);
     history.push("/auth/login");
@@ -60,7 +61,7 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      await getUserByAccessToken();
+      if (accessToken) await getUserByAccessToken();
       setLoading(false);
     })();
   }, [accessToken]);

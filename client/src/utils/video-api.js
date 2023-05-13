@@ -32,3 +32,14 @@ export async function getVideoFollower(id) {
         return [];
     }
 }
+export async function deleteVideo(videoId) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/video/deleteVideo`, { videoId });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

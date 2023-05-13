@@ -63,7 +63,7 @@ export class AdminController {
     } catch (error) {
       return response.status(400).json({
         data: null,
-        error: "get video failed",
+        error: "no value",
       });
     }
   }

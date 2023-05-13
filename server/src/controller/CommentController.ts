@@ -79,7 +79,6 @@ export class CommentController {
         },
         relations: ["video", "user"],
       });
-
       if (!comment) {
         throw new Error("Comment not found.");
       }

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '~/components/Button/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +25,7 @@ const Profile = () => {
     const [followerAcount, setFollowerAcount] = useState(0);
 
     const nickname = searchParams.get(`nickname`);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -53,6 +55,13 @@ const Profile = () => {
             }
         })();
     }, [userProfile]);
+
+    const handleClickComment = (id) => {
+        if (user) {
+            navigate(`/comment?videoId=${id}`);
+        }
+    };
+
     return (
         <>
             <div className={cx('wrapper')}>
@@ -108,7 +117,11 @@ const Profile = () => {
                 <div className={cx('video-column')}>
                     <div className={cx('user_video-list')}>
                         {videoUserList.map((video, id) => (
-                            <div className={cx('content-video')} key={`video${id}`}>
+                            <div
+                                className={cx('content-video')}
+                                key={`video${id}`}
+                                onClick={() => handleClickComment(video.id)}
+                            >
                                 <div className={cx('video')}>
                                     <video
                                         controlsList="nofullscreen"

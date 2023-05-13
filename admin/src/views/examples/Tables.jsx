@@ -37,20 +37,51 @@ import {
 } from "reactstrap";
 // core components
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Header from "../../components/Headers/Header";
 import "./Tables.css";
 import { getPendingVideos } from "../../ultils/video-api";
+import { deleteVideo } from "../../ultils/video-api";
+import { accpetPendingVideo } from "../../ultils/video-api";
 
 const Tables = () => {
+  const history = useHistory();
   const [pendingVideoList, setPendingVideoList] = useState([]);
+  const [status, setStatus] = useState("public");
+
   useEffect(() => {
     (async () => {
       const list = await getPendingVideos();
       setPendingVideoList(list);
     })();
   }, []);
-  // console.log(pendingVideoList.map((video) => video.description));
+
+  const acceptVideo = async (videoId) => {
+    try {
+      await accpetPendingVideo(videoId, status);
+      const pendingVideoArray = [...pendingVideoList];
+      const updateList = pendingVideoArray.filter(
+        (video) => video.user.user_request_status === status
+      );
+      setStatus(updateList);
+      history.push("/admin/tables");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletePendingVideo = async (id) => {
+    try {
+      await deleteVideo(id);
+      const pendingVideoArray = [...pendingVideoList];
+      const updateList = pendingVideoArray.filter((video) => video.id !== id);
+      setPendingVideoList(updateList);
+      history.push("/admin/tables");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Header />
@@ -101,14 +132,22 @@ const Tables = () => {
               </div>
 
               <div className={"action-item"}>
-                <button type="button" className={"comment"}>
+                <button
+                  type="button"
+                  className={"comment"}
+                  onClick={() => acceptVideo(video.id)}
+                >
                   <span className={"icon-check"}>
                     <i className="fas fa-check text-success mr-3 span-icon_success"></i>
                   </span>
                 </button>
-                <button type="button" className={"like"}>
+                <button
+                  type="button"
+                  className={"like"}
+                  onClick={() => deletePendingVideo(video.id)}
+                >
                   <span className="icon-delete">
-                    <i className="ni ni-fat-remove text-danger mr-3 span-icon_danger"></i>
+                    <i className="ni ni-fat-remove text-danger  mr-3 span-icon_danger"></i>
                   </span>
                 </button>
               </div>

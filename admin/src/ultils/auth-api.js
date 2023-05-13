@@ -23,7 +23,7 @@ async function login(username, password) {
 async function refreshToken(token) {
   try {
     const { data, error } = await axios.get(
-      "http://localhost:8080/authentication/refresh-token?token=" + token
+      "http://localhost:8080/user/refresh-token?token=" + token
     );
 
     if (!data || error) throw new Error();

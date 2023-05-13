@@ -68,6 +68,7 @@ router.get(
   AuthGuard,
   videoController.getVideoFollower
 );
+router.post("/video/deleteVideo", AuthGuard, videoController.deleteVideo);
 // like
 router.post("/like/likeVideo", AuthGuard, likeController.likeVideo);
 router.post("/like/unlike", AuthGuard, likeController.unlikeVideo);

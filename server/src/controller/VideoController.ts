@@ -32,6 +32,7 @@ export class VideoController {
     this.getVideoAndCommentById = this.getVideoAndCommentById.bind(this);
     this.getVideoToday = this.getVideoToday.bind(this);
     this.getVideoFollower = this.getVideoFollower.bind(this);
+    this.deleteVideo = this.deleteVideo.bind(this);
   }
 
   async uploadVideo(
@@ -218,6 +219,22 @@ export class VideoController {
         data: null,
         error: "You can't get videoFollower",
       });
+    }
+  }
+  async deleteVideo(request: Request, response: Response, next: NextFunction) {
+    const { videoId } = request.body;
+    try {
+      const video = await this.videoRepository.findOne({
+        where: { id: videoId },
+      });
+      if (video) {
+        await this.videoRepository.remove(video);
+        console.log("delete video successfully");
+      } else {
+        console.log("Video not found");
+      }
+    } catch (error) {
+      console.error("delete video error", error);
     }
   }
 }
