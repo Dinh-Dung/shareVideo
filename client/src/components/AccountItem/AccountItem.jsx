@@ -9,12 +9,17 @@ import PropTypes from 'prop-types';
 
 const cx = classNames.bind(styles);
 function AccountItem({ data }) {
+    console.log(data);
     return (
-        <Link to={`/@${data.nickname}`} className={cx('wrapper')}>
-            <Image src={data.avatar} alt={data.full_name} className={cx('avatar')} />
+        <Link to={`/profile?nickname=${data.nickname}`} className={cx('wrapper')}>
+            <div className={cx('browse-user-avatar')}>
+                <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
+                    <span>{data.fullname[0]}</span>
+                </div>
+            </div>
             <div className={cx('info')}>
                 <p className={cx('name')}>
-                    <span>{data.full_name}</span>
+                    <span>{data.fullname}</span>
                     {data.tick && <FontAwesomeIcon className={cx('check')} icon={faCircleCheck} />}
                 </p>
                 <span className={cx('username')}>{data.nickname}</span>

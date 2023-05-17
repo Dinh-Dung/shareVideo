@@ -8,6 +8,7 @@ import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
 import AccountItem from '~/components/AccountItem/AccountItem';
 import { useDebounce } from '~/hooks';
+import { searchUser } from '~/utils/search-api';
 const cx = classNames.bind(styles);
 function Search() {
     const [searchValue, setSearchValue] = useState('');
@@ -17,7 +18,7 @@ function Search() {
 
     const debouncedValue = useDebounce(searchValue, 500);
     const inputRef = useRef();
-  
+
     const handleChange = (e) => {
         const searchValue = e.target.value;
         if (!searchValue.startsWith(' ')) {
@@ -39,8 +40,8 @@ function Search() {
         }
         const fetchApi = async () => {
             setLoading(true);
-            // const result = await searchServices.search(debouncedValue);
-            // setSearchResult(result);
+            const result = await searchUser(searchValue);
+            setSearchResult(result);
             setLoading(false);
         };
         fetchApi();

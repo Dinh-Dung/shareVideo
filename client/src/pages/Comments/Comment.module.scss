@@ -189,6 +189,23 @@ button.close-btn {
         align-items: center;
     }
 }
+
+button.acceptvideo,
+button.deletevideo {
+    background-color: transparent;
+    cursor: pointer;
+}
+button.acceptvideo {
+    margin-right: 1.5rem;
+    &:hover {
+        color: green;
+    }
+}
+button.deletevideo {
+    :hover {
+        color: rgb(255, 61, 61);
+    }
+}
 .more-btn {
     cursor: pointer;
     color: #dcdcdc;

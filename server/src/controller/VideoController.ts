@@ -33,6 +33,8 @@ export class VideoController {
     this.getVideoToday = this.getVideoToday.bind(this);
     this.getVideoFollower = this.getVideoFollower.bind(this);
     this.deleteVideo = this.deleteVideo.bind(this);
+    this.getPrivateVideos = this.getPrivateVideos.bind(this);
+    this.acceptVideoAtClient = this.acceptVideoAtClient.bind(this);
   }
 
   async uploadVideo(
@@ -235,6 +237,60 @@ export class VideoController {
       }
     } catch (error) {
       console.error("delete video error", error);
+    }
+  }
+  async getPrivateVideos(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    const userId = Number(request.params.userId);
+    try {
+      const list = await this.videoRepository.find({
+        relations: ["user"],
+        where: {
+          status: VideoStatus.Private,
+          user: { id: userId },
+        },
+      });
+      const shuffledList = list.sort(() => Math.random() - 0.5);
+      return response.status(200).json({
+        data: shuffledList,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "get videos failed",
+      });
+    }
+  }
+  async acceptVideoAtClient(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    const { videoId } = request.body;
+    try {
+      // Lấy video cần cập nhật
+      const video = await this.videoRepository.findOne({
+        where: { id: videoId },
+      });
+      // Kiểm tra và cập nhật trạng thái nếu video có trạng thái là "private"
+      if (video.status === VideoStatus.Private) {
+        video.status = VideoStatus.Pending;
+        video.user_request_status = VideoStatus.Public;
+        await this.videoRepository.save(video);
+      }
+      return response.status(200).json({
+        data: video,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "post videos failed",
+      });
     }
   }
 }

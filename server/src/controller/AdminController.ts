@@ -20,7 +20,13 @@ export class AdminController {
           status: VideoStatus.Pending,
         },
       });
-
+      for (const video of list) {
+        if (video.user_request_status === VideoStatus.Private) {
+          video.status = VideoStatus.Private;
+          await this.videoRepository.save(video);
+        }
+      }
+      list.filter((video) => video.user_request_status !== VideoStatus.Private);
       const shuffledList = list.sort(() => Math.random() - 0.5);
       return response.status(200).json({
         data: shuffledList,

@@ -161,12 +161,10 @@ const VideoPlayer = ({ video }) => {
                             src={video.url}
                             controls
                             loop
-                            autoPlay
                             muted={false}
-                            style={{ width: '100%', height: '456px' }}
+                            style={{ width: '100%', height: '584px' }}
                         ></video>
                     </div>
-
                     {user ? (
                         <div className={cx('action-item')}>
                             <button type="button" className={cx('like')}>

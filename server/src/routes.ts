@@ -9,6 +9,7 @@ import { LikeController } from "./controller/LikeController";
 import { FollowController } from "./controller/FollowController";
 import { SaveActive } from "./controller/SaveAtiveController";
 import { AdminController } from "./controller/AdminController";
+import { SearchController } from "./controller/SearchController";
 
 // Configure Multer
 const storage = multer.memoryStorage();
@@ -24,6 +25,7 @@ const followController = new FollowController();
 const commentController = new CommentController();
 const saveActiveController = new SaveActive();
 const adminController = new AdminController();
+const serchController = new SearchController();
 
 // category
 router.get("/category/getList", categoryController.getCategory);
@@ -42,7 +44,6 @@ router.get(
 router.get("/user/randomUsersSuggest", userController.randomUsersSuggest);
 router.get(
   "/user/getProfileAndVideoByNickname/:nickname",
-  AuthGuard,
   userController.getProfileAndVideoByNickname
 );
 // video,
@@ -69,6 +70,16 @@ router.get(
   videoController.getVideoFollower
 );
 router.post("/video/deleteVideo", AuthGuard, videoController.deleteVideo);
+router.get(
+  "/video/getPrivateVideos/:userId",
+  AuthGuard,
+  videoController.getPrivateVideos
+);
+router.post(
+  "/video/acceptVideoClient",
+  AuthGuard,
+  videoController.acceptVideoAtClient
+);
 // like
 router.post("/like/likeVideo", AuthGuard, likeController.likeVideo);
 router.post("/like/unlike", AuthGuard, likeController.unlikeVideo);
@@ -102,7 +113,8 @@ router.get(
   "/comment/getCommentVideo/:videoId",
   commentController.getCommentVideo
 );
-
+//search
+router.get("/search/users", serchController.searchUser);
 //admin
 router.get(
   "/admin/getPendingVideos",

@@ -14,6 +14,9 @@ import { getProfileAndVideoByNickname } from '~/utils/user-api';
 import { likeCountOfVideo } from '~/utils/like-api';
 import { getUserFollowers } from '~/utils/user-api';
 import { getFollowerOfUser } from '~/utils/follow-api';
+import { getPrivateVideos } from '~/utils/video-api';
+import VideoUser from './VideoUser';
+import PrivateUser from './PrivateUser';
 const cx = classNames.bind(styles);
 const Profile = () => {
     const { user } = useAuth();
@@ -23,10 +26,15 @@ const Profile = () => {
     const [likeCount, setLikeCount] = useState(0);
     const [followingAcounts, setFollowingAcounts] = useState(0);
     const [followerAcount, setFollowerAcount] = useState(0);
+    const [privateVideos, setPrivateVideos] = useState([]);
+    const [videoState, setVideoState] = useState('Videos');
 
     const nickname = searchParams.get(`nickname`);
     const navigate = useNavigate();
 
+    const changeModalMode = () => {
+        setVideoState((prevS) => (prevS === 'Videos' ? 'Private' : 'Videos'));
+    };
     useEffect(() => {
         (async () => {
             if (!nickname) {
@@ -41,26 +49,22 @@ const Profile = () => {
             }
         })();
     }, [user, nickname]);
-
     useEffect(() => {
         (async () => {
             if (user && userProfile) {
-                const getLikeCountOfVideo = await likeCountOfVideo(userProfile.id);
+                const getLikeCountOfVideo = await likeCountOfVideo(userProfile?.id);
                 setLikeCount(getLikeCountOfVideo);
-                const getFollowingUsers = await getUserFollowers(userProfile.id);
+
+                const getFollowingUsers = await getUserFollowers(userProfile?.id);
                 setFollowingAcounts(getFollowingUsers);
 
-                const getFollowerUser = await getFollowerOfUser(userProfile.id);
+                const getFollowerUser = await getFollowerOfUser(userProfile?.id);
                 setFollowerAcount(getFollowerUser);
+                const videoPrivate = await getPrivateVideos(userProfile?.id);
+                setPrivateVideos(videoPrivate);
             }
         })();
-    }, [userProfile]);
-
-    const handleClickComment = (id) => {
-        if (user) {
-            navigate(`/comment?videoId=${id}`);
-        }
-    };
+    }, [user, userProfile, userProfile?.id]);
 
     return (
         <>
@@ -75,9 +79,13 @@ const Profile = () => {
                         <div className={cx('user-title')}>
                             <h2 className={cx('nickname-user')}>{userProfile ? userProfile.nickname : 'nickname'}</h2>
                             <h1 className={cx('user-name')}>{userProfile ? userProfile.fullname : 'fullname'}</h1>
-                            <div className={cx('edit-profile')}>
-                                <Button leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}>Edit profile</Button>
-                            </div>
+                            {user?.nickname === userProfile?.nickname ? (
+                                <div className={cx('edit-profile')}>
+                                    <Button leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}>Edit profile</Button>
+                                </div>
+                            ) : (
+                                <div className={cx('edit-profile')}></div>
+                            )}
                         </div>
                     </div>
                     <h3 className={cx('counts-info')}>
@@ -105,34 +113,34 @@ const Profile = () => {
             </div>
             <div className={cx('layout-main')}>
                 <div className={cx('tab')}>
-                    <p className={cx('videos-tab')}>
-                        <span>Videos</span>
-                    </p>
-                    <p className={cx('public-tab')}>
-                        <FontAwesomeIcon icon={faLock} />
-                        <span style={{ marginLeft: '1rem' }}>Private</span>
-                    </p>
+                    {user?.nickname === userProfile?.nickname ? (
+                        <p className={cx('public-tab')}>
+                            {videoState === 'Private' ? <FontAwesomeIcon icon={faLock} /> : <></>}
+                            <span style={{ marginLeft: '1rem' }} onClick={changeModalMode}>
+                                {videoState}
+                            </span>
+                        </p>
+                    ) : (
+                        <p className={cx('videos-tab')}>
+                            <span>Videos</span>
+                        </p>
+                    )}
                 </div>
 
                 <div className={cx('video-column')}>
-                    <div className={cx('user_video-list')}>
-                        {videoUserList.map((video, id) => (
-                            <div
-                                className={cx('content-video')}
-                                key={`video${id}`}
-                                onClick={() => handleClickComment(video.id)}
-                            >
-                                <div className={cx('video')}>
-                                    <video
-                                        controlsList="nofullscreen"
-                                        src={video.url}
-                                        controls
-                                        style={{ width: '256px', height: '456px' }}
-                                    ></video>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    {videoState === 'Videos' ? (
+                        <div className={cx('user_video-list')}>
+                            {videoUserList.map((video, id) => (
+                                <VideoUser video={video} key={`video_id${id}`} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={cx('user_video-list')}>
+                            {privateVideos.map((video, id) => (
+                                <PrivateUser video={video} key={`video_id${id}`} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </>

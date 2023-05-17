@@ -6,6 +6,7 @@ import * as jwt from "jsonwebtoken";
 import { Follow } from "../entity/Follow";
 import { Equal } from "typeorm";
 import { Like } from "../entity/Like";
+import { VideoStatus } from "../entity/Video";
 
 export class UserController {
   constructor(
@@ -211,13 +212,19 @@ export class UserController {
   ) {
     const nickname = request.params.nickname;
     try {
-      const userWithVideos = await this.userRepository.findOne({
-        where: {
-          nickname: nickname,
-        },
-        relations: ["video"],
-      });
+      // const userWithVideos = await this.userRepository.findOne({
+      //   where: {
+      //     nickname: nickname,
+      //   },
+      //   relations: ["video"],
+      // });
+      const queryBuilder = this.userRepository
+        .createQueryBuilder("user")
+        .leftJoinAndSelect("user.video", "video")
+        .where("user.nickname = :nickname", { nickname })
+        .andWhere("video.status = :status", { status: "public" });
 
+      const userWithVideos = await queryBuilder.getOne();
       return response.status(200).json({
         data: userWithVideos,
         error: null,

@@ -50,8 +50,27 @@ const AccountItem = () => {
                     render={() => renderPreview(user1)}
                     key={id}
                 >
-                    {user ? (
-                        <div className={cx('account-item')} onClick={() => handleClickProfile(user1)}>
+                    {/* {user ? ( */}
+                    <div className={cx('account-item')} onClick={() => handleClickProfile(user1)}>
+                        <Link className={cx('browse-user-avatar')}>
+                            <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
+                                <span>{user1.user_fullname[0]}</span>
+                            </div>
+                        </Link>
+                        <div className={cx('item-info')}>
+                            <p className={cx('nickname')}>
+                                <strong>{user1.user_nickname}</strong>
+                                {user1.tick ? (
+                                    <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />
+                                ) : (
+                                    <FontAwesomeIcon icon={faCake} className={cx('check1')} />
+                                )}
+                            </p>
+                            <p className={cx('name')}>{user1.user_fullname}</p>
+                        </div>
+                    </div>
+                    {/* ) : ( */}
+                    {/* <div className={cx('account-item')}>
                             <Link className={cx('browse-user-avatar')}>
                                 <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
                                     <span>{user1.user_fullname[0]}</span>
@@ -68,27 +87,8 @@ const AccountItem = () => {
                                 </p>
                                 <p className={cx('name')}>{user1.user_fullname}</p>
                             </div>
-                        </div>
-                    ) : (
-                        <div className={cx('account-item')}>
-                            <Link className={cx('browse-user-avatar')}>
-                                <div className={cx('user-avatar')} style={{ width: '56px', height: '56px' }}>
-                                    <span>{user1.user_fullname[0]}</span>
-                                </div>
-                            </Link>
-                            <div className={cx('item-info')}>
-                                <p className={cx('nickname')}>
-                                    <strong>{user1.user_nickname}</strong>
-                                    {user1.tick ? (
-                                        <FontAwesomeIcon icon={faCheckCircle} className={cx('check')} />
-                                    ) : (
-                                        <FontAwesomeIcon icon={faCake} className={cx('check1')} />
-                                    )}
-                                </p>
-                                <p className={cx('name')}>{user1.user_fullname}</p>
-                            </div>
-                        </div>
-                    )}
+                        </div> */}
+                    {/* )} */}
                 </Tippy>
             ))}
         </div>

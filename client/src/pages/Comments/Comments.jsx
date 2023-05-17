@@ -1,19 +1,26 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCommentDots, faClose, faHeart, faCircleXmark, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCommentDots,
+    faClose,
+    faHeart,
+    faCircleXmark,
+    faCircleCheck,
+    faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import { Code, Telegram, FaceBook, WhatsApp, Twitter, Share } from '../../components/Icons';
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { likeCountOfVideo } from '~/utils/like-api';
 
-import { getVideoAndCommentById } from '~/utils/video-api';
-import styles from './Comment.module.scss';
 import { useAuth } from '~/hooks/useAuth';
+import styles from './Comment.module.scss';
+import { likeCountOfVideo } from '~/utils/like-api';
+import { getVideoAndCommentById } from '~/utils/video-api';
 import { Comment, deleteComment } from '~/utils/comment-api';
 import { likeVideo, unlikeVideo, userLiked } from '~/utils/like-api';
-import { deleteVideo } from '~/utils/video-api';
+import { deleteVideo, acceptVideo } from '~/utils/video-api';
 
 const cx = classNames.bind(styles);
 function Comments() {
@@ -29,7 +36,7 @@ function Comments() {
 
     const navigate = useNavigate();
     const handleCloseClick = () => {
-        navigate(`/`);
+        navigate(-1);
     };
 
     useEffect(() => {
@@ -95,17 +102,27 @@ function Comments() {
         try {
             await deleteVideo(id);
             const pendingVideoArray = [...video];
-            const updateList = pendingVideoArray.filter((video) => video.id !== id);
+            const updateVideoList = pendingVideoArray.filter((video) => video.id !== id);
             navigate('/');
-            setVideo(updateList);
+            setVideo(updateVideoList);
         } catch (error) {
             console.log(error);
         }
     };
-    // console.log(comments.map((comment) => comment.id));
+    const acceptVideoPrivate = async (id) => {
+        try {
+            await acceptVideo(id);
+            const pendingVideoArray = [...video];
+            const updateVideoList = pendingVideoArray.filter((video) => video.id === id);
+            navigate('/');
+            setVideo(updateVideoList);
+        } catch (error) {}
+    };
+
     if (!user || video === null) {
         return <h1>doi cho</h1>;
     }
+
     return (
         <div className={cx('wrapper')}>
             <button className={cx('close-btn')} onClick={handleCloseClick}>
@@ -139,9 +156,21 @@ function Comments() {
                             Follow
                         </button> */}
                         {user.id === video.user.id ? (
-                            <button onClick={() => deletePendingVideo(video.id)} style={{ cursor: 'pointer' }}>
-                                <FontAwesomeIcon icon={faTrashCan} style={{ width: '18px', height: '18px' }} />
-                            </button>
+                            <>
+                                {video.user_request_status === 'private' ? (
+                                    <button className={cx('acceptvideo')} onClick={() => acceptVideoPrivate(video.id)}>
+                                        <FontAwesomeIcon
+                                            icon={faCircleCheck}
+                                            style={{ width: '22px', height: '22px' }}
+                                        />
+                                    </button>
+                                ) : (
+                                    <></>
+                                )}
+                                <button className={cx('deletevideo')} onClick={() => deletePendingVideo(video.id)}>
+                                    <FontAwesomeIcon icon={faTrash} style={{ width: '22x', height: '22px' }} />
+                                </button>
+                            </>
                         ) : (
                             <></>
                         )}

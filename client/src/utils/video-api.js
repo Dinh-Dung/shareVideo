@@ -21,6 +21,17 @@ export async function getVideoToday() {
         return [];
     }
 }
+export async function getPrivateVideos(id) {
+    try {
+        const { data, error } = await axios.get(`http://localhost:8080/video/getPrivateVideos/${id}`);
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}
 export async function getVideoFollower(id) {
     try {
         const { data, error } = await axios.get(`http://localhost:8080/video/getVideoFollower/${id}`);
@@ -35,6 +46,17 @@ export async function getVideoFollower(id) {
 export async function deleteVideo(videoId) {
     try {
         const { data, error } = await axios.post(`http://localhost:8080/video/deleteVideo`, { videoId });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}
+export async function acceptVideo(videoId) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/video/acceptVideoClient`, { videoId });
 
         if (!data || error) throw new Error();
 

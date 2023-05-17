@@ -15,21 +15,21 @@ const Explore = () => {
             setVideoToday(list);
         })();
     }, []);
-    const handleClickComment = () => {
+    const handleClickComment = (id) => {
         if (user) {
-            navigate(`/comment?videoId=${videoToday.id}`);
+            navigate(`/comment?videoId=${id}`);
         }
     };
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('category-list')}>
-                <h2>Video today</h2>
+                <h2>Videos today</h2>
             </div>
             <div className={cx('explore-item_container')}>
                 <div className={cx('explore-item-list')}>
                     {videoToday.map((video, id) => (
-                        <div className={cx('content-video')} key={id} onClick={handleClickComment}>
+                        <div className={cx('content-video')} key={id} onClick={() => handleClickComment(video.id)}>
                             <div className={cx('video')}>
                                 <video src={video.url} controls style={{ width: '100%', height: '456px' }}></video>
                             </div>
