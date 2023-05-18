@@ -14,7 +14,7 @@ const VideoUser = ({ video }) => {
             navigate(`/comment?videoId=${id}`);
         }
     };
-    console.log(video);
+
     return (
         <div className={cx('content-video')} onClick={() => handleClickComment(video.id)}>
             {/* {video.status === 'public' ? ( */}

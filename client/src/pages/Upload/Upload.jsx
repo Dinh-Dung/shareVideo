@@ -1,3 +1,4 @@
+/* eslint-disable no-const-assign */
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './Upload.module.scss';
@@ -119,7 +120,8 @@ const Upload = () => {
                                         <div className={cx('caption-title')}>
                                             <span>Caption</span>
                                             <span className={cx('require-font')}>
-                                                <span className={cx('first')}>0</span>/ 2200
+                                                <span className={cx('first')}>{uploadForm.description.length}</span>/
+                                                2200
                                             </span>
                                         </div>
                                     </div>
@@ -182,7 +184,12 @@ const Upload = () => {
                                 </div>
 
                                 {loading ? (
-                                    <h1>quay quay</h1>
+                                    <>
+                                        <div className={cx('loader')}></div>
+                                        <span className={cx('message-upload')}>
+                                            Video của bạn đã được đăng lên và đang đợi kiểm duyệt! Vui lòng chờ{' '}
+                                        </span>
+                                    </>
                                 ) : (
                                     <div className={cx('button')}>
                                         <div className={cx('btn-cancel')} onClick={() => navigate('/')}>

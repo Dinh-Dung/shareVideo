@@ -55,7 +55,7 @@ const Tables = () => {
       const list = await getPendingVideos();
       setPendingVideoList(list);
     })();
-  }, []);
+  }, [pendingVideoList]);
 
   const acceptVideo = async (videoId) => {
     try {

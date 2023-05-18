@@ -1,6 +1,6 @@
-@mixin textspan{
+@mixin textspan {
     box-sizing: border-box;
-    font-size:13px;
+    font-size: 13px;
     line-height: 1.5;
     // font-family: proxima-regular, Arial, Tahoma, PingFangSC, sans-serif, "Segoe UI Emoji", "Noto Emoji";
     font-family: var(--font-family);
@@ -8,28 +8,27 @@
     color: #161823bf;
 }
 
-
-.wrapper{
+.wrapper {
     background-color: rgb(248, 248, 248);
 }
-.layout{
+.layout {
     margin: 0px auto;
     width: 1100px;
     padding-top: 8rem;
     padding-bottom: 16px;
     background-color: rgb(248, 248, 248);
 }
-.container-layout{
+.container-layout {
     width: 1100px;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
     border-radius: 8px;
     background-color: rgb(255, 255, 255);
-    padding: 24px 40px
+    padding: 24px 40px;
 }
-.post-title{
+.post-title {
     margin-left: -5px;
 }
-.title{
+.title {
     box-sizing: border-box;
     margin-block: 0px;
     font-size: 24px;
@@ -38,30 +37,30 @@
     color: #030303;
     display: block;
 }
-.sub{
+.sub {
     margin-top: 2px;
 }
-.sub-title{
-    @include textspan()
+.sub-title {
+    @include textspan();
 }
 
-.content{
+.content {
     display: flex;
     margin-top: 24px;
     margin-bottom: 130px;
 }
-.upload{
+.upload {
     border: 2px dashed rgb(207, 205, 205);
     padding: 6.5rem 0;
     border-radius: 5px;
 }
-.upload:hover{
+.upload:hover {
     background: rgba(22, 24, 35, 0.03);
 }
-.uploader{
+.uploader {
     margin-top: 24px;
 }
-.upload-card{
+.upload-card {
     border-radius: 8px;
     display: flex;
     -webkit-box-pack: center;
@@ -74,11 +73,11 @@
     padding-left: 35px;
     padding-right: 35px;
 }
-.text-main{
+.text-main {
     text-align: center;
     margin-top: 24px;
 }
-.text-main-span{
+.text-main-span {
     box-sizing: border-box;
     margin-block: 0px;
     font-size: 18px;
@@ -87,46 +86,46 @@
     font-weight: 600;
     color: #333;
 }
-.text-sub{
+.text-sub {
     margin-top: 4px;
     margin-bottom: 24px;
 }
-.text-sub-span{
-   @include textspan()
+.text-sub-span {
+    @include textspan();
 }
-.text-video-info{
+.text-video-info {
     list-style: none;
 }
-.tfi1{
+.tfi1 {
     margin-bottom: 6px;
-    text-align: center; 
-    span{
-        @include textspan()
+    text-align: center;
+    span {
+        @include textspan();
     }
 }
-.tfi2{
+.tfi2 {
     text-align: center;
     margin-bottom: 6px;
     text-align: center;
-    span{
-        @include textspan()
+    span {
+        @include textspan();
     }
 }
-.tfi3{
+.tfi3 {
     margin-bottom: 6px;
     text-align: center;
-    span{
-        @include textspan()
+    span {
+        @include textspan();
     }
 }
-.tfi4{
+.tfi4 {
     margin-bottom: 0px;
     text-align: center;
-    span{
-        @include textspan()
+    span {
+        @include textspan();
     }
 }
-.file-select-button{
+.file-select-button {
     display: flex;
     justify-content: center;
     margin-top: 32px;
@@ -135,64 +134,62 @@
 
 // form
 
-.form{
+.form {
     margin-left: 24px;
     flex: 1 1 0%;
     min-width: 0px;
 }
-.caption-wrapper{
+.caption-wrapper {
     margin-bottom: 24px;
 }
-.caption{
+.caption {
     outline-style: none;
     position: relative;
     flex: 1 1 0%;
 }
-.caption-title{
+.caption-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    span{
+    span {
         @include textspan();
-        font-size:18px;
+        font-size: 18px;
         color: #030303;
     }
-    
 }
-span.require-font{
-        font-size: 14px;
-        color: #b4b4b4;
-        font-family: 'Courier New', Courier, monospace;
+span.require-font {
+    font-size: 14px;
+    color: #b4b4b4;
+    font-family: 'Courier New', Courier, monospace;
 }
-span.first{
+span.first {
     font-size: 14px;
     @include textspan();
 }
-.input-write-content{
+.input-write-content {
     max-width: 100%;
     margin-top: 4px;
     border: 1px solid #e2dede;
     padding: 22px 0;
     padding-left: 5px;
     border-radius: 5px;
-    input[type="text"] {
+    input[type='text'] {
         width: 100%;
         padding: 0px 12px;
         @include textspan();
         font-size: 16px;
-        font-family: proxima-regular, Arial, Tahoma, PingFangSC, sans-serif, "Segoe UI Emoji", "Noto Emoji";
+        font-family: proxima-regular, Arial, Tahoma, PingFangSC, sans-serif, 'Segoe UI Emoji', 'Noto Emoji';
     }
 }
-.chose-title{
+.chose-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    span{
+    span {
         @include textspan();
-        font-size:18px;
+        font-size: 18px;
         color: #030303;
     }
-    
 }
 // select
 
@@ -207,18 +204,18 @@ select {
     background-color: #fff;
     background-image: none;
     cursor: pointer;
-  }
-  /* Remove IE arrow */
-  select::-ms-expand {
+}
+/* Remove IE arrow */
+select::-ms-expand {
     display: none;
-  }
-  /* Custom Select wrapper */
-.select{
+}
+/* Custom Select wrapper */
+.select {
     position: relative;
     display: flex;
     width: 20em;
     height: 3em;
-    border-radius: .25em;
+    border-radius: 0.25em;
     margin-top: 0.5rem;
     overflow: hidden;
     border: 1px solid gray;
@@ -229,29 +226,55 @@ select {
     top: -9px;
     right: 0;
     padding: 1em;
-    transition: .25s all ease;
+    transition: 0.25s all ease;
     pointer-events: none;
-  }
-  /* Transition */
-.select option{
+}
+/* Transition */
+
+.select option {
     width: 100%;
     display: flex;
     background: rgb(255, 255, 255);
     padding: 10px 12px;
-    font-family: ProximaNova;
+    font-family: var(--font-family);
     font-size: 16px;
     line-height: 22px;
     box-sizing: border-box;
     color: rgb(22, 24, 35);
-     cursor: pointer;
+    cursor: pointer;
+    overflow-y: scroll;
 }
+
 // btn
 
-.button{
+.button {
     display: flex;
     margin-top: 10rem;
     justify-content: center;
 }
-.btn-cancel{
+.btn-cancel {
     margin-right: 16px;
+}
+// loadding video
+.loader {
+    margin: auto;
+    border: 20px solid #eaf0f6;
+    border-radius: 50%;
+    border-top: 20px solid #ff7a59;
+    width: 200px;
+    height: 200px;
+    animation: spinner 4s linear infinite;
+}
+span.message-upload {
+    font-family: var(--font-family);
+    font-size: 14px;
+    margin-left: 2rem;
+}
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

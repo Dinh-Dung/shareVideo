@@ -26,7 +26,7 @@ import {
   Nav,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 const AdminNavbar = () => {
@@ -36,6 +36,7 @@ const AdminNavbar = () => {
         <Container className="px-4">
           <NavbarBrand to="/" tag={Link}>
             <img
+              style={{ width: "100px" }}
               alt="..."
               src={require("../../assets/img/brand/argon-react-white.png")}
             />

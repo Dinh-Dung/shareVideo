@@ -120,7 +120,12 @@ function Comments() {
     };
 
     if (!user || video === null) {
-        return <h1>doi cho</h1>;
+        return (
+            <>
+                <h1>😲 404 </h1>
+                <h3>Page can't be found</h3>
+            </>
+        );
     }
 
     return (

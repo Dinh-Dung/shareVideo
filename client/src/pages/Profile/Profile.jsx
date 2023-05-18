@@ -79,13 +79,13 @@ const Profile = () => {
                         <div className={cx('user-title')}>
                             <h2 className={cx('nickname-user')}>{userProfile ? userProfile.nickname : 'nickname'}</h2>
                             <h1 className={cx('user-name')}>{userProfile ? userProfile.fullname : 'fullname'}</h1>
-                            {user?.nickname === userProfile?.nickname ? (
+                            {/* {user?.nickname === userProfile?.nickname ? (
                                 <div className={cx('edit-profile')}>
                                     <Button leftIcon={<FontAwesomeIcon icon={faPenToSquare} />}>Edit profile</Button>
                                 </div>
-                            ) : (
-                                <div className={cx('edit-profile')}></div>
-                            )}
+                            ) : ( */}
+                            <div className={cx('edit-profile')}></div>
+                            {/* )} */}
                         </div>
                     </div>
                     <h3 className={cx('counts-info')}>

@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 
 const cx = classNames.bind(styles);
 function AccountItem({ data }) {
-    console.log(data);
     return (
         <Link to={`/profile?nickname=${data.nickname}`} className={cx('wrapper')}>
             <div className={cx('browse-user-avatar')}>
