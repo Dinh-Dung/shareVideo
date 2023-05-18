@@ -54,7 +54,7 @@ async function getUser() {
 async function getAllUser() {
   try {
     const { data, error } = await axios.get(
-      "http://localhost:8080/user/getAllUser"
+      "http://localhost:8080/admin/getAllUser"
     );
     if (!data || error) throw new Error();
 

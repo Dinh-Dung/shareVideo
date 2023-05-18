@@ -46,6 +46,7 @@ router.get(
   "/user/getProfileAndVideoByNickname/:nickname",
   userController.getProfileAndVideoByNickname
 );
+
 // video,
 router.post(
   "/video/upload",
@@ -127,5 +128,6 @@ router.post(
   AuthGuard,
   adminController.acceptVideoUploaded
 );
-
+router.get("/admin/getAllUser", AuthGuard, adminController.getAllUser);
+router.post("/admin/deleteUser", AuthGuard, adminController.deleteUser);
 export default router;

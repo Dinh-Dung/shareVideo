@@ -1,11 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Video, VideoStatus } from "../entity/Video";
+import { Users } from "../entity/User";
+import { Not } from "typeorm";
 
 export class AdminController {
-  constructor(private videoRepository = AppDataSource.getRepository(Video)) {
+  constructor(
+    private videoRepository = AppDataSource.getRepository(Video),
+    private userRepository = AppDataSource.getRepository(Users)
+  ) {
     this.getVideoPending = this.getVideoPending.bind(this);
     this.acceptVideoUploaded = this.acceptVideoUploaded.bind(this);
+    this.getAllUser = this.getAllUser.bind(this);
+    this.deleteUser = this.deleteUser.bind(this);
   }
 
   async getVideoPending(
@@ -70,6 +77,56 @@ export class AdminController {
       return response.status(400).json({
         data: null,
         error: "no value",
+      });
+    }
+  }
+  async getAllUser(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    try {
+      const users = await this.userRepository.find({
+        where: {
+          username: Not("admin"), // Loại bỏ tài khoản admin
+        },
+        relations: ["video", "like", "follower", "following"],
+      });
+      const usersInformation = users.map((user) => {
+        return {
+          user,
+          likeCount: user.like.length,
+          videoCount: user.video.length,
+          followerCount: user.follower.length,
+          followingCount: user.following.length,
+        };
+      });
+      return response.status(200).json({
+        data: usersInformation,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "Get user false",
+      });
+    }
+  }
+  async deleteUser(request: Request, response: Response, next: NextFunction) {
+    const { userId } = request.body;
+    try {
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      if (user) {
+        await this.userRepository.remove(user);
+        console.log("Delete user successfully");
+      } else {
+        console.log("User not found");
+      }
+      return response.status(200).send("Delete User successfully!");
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "Delete false",
       });
     }
   }

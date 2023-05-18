@@ -212,12 +212,6 @@ export class UserController {
   ) {
     const nickname = request.params.nickname;
     try {
-      // const userWithVideos = await this.userRepository.findOne({
-      //   where: {
-      //     nickname: nickname,
-      //   },
-      //   relations: ["video"],
-      // });
       const queryBuilder = this.userRepository
         .createQueryBuilder("user")
         .leftJoinAndSelect("user.video", "video")
@@ -232,7 +226,7 @@ export class UserController {
     } catch (error) {
       return response.status(400).json({
         data: null,
-        error: "Failed to get random users",
+        error: "Falsed to get random users",
       });
     }
   }
