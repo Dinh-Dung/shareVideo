@@ -44,18 +44,67 @@ import "./Tables.css";
 import { getPendingVideos } from "../../ultils/video-api";
 import { deleteVideo } from "../../ultils/video-api";
 import { accpetPendingVideo } from "../../ultils/video-api";
+import { useRef } from "react";
 
 const Tables = () => {
   const history = useHistory();
   const [pendingVideoList, setPendingVideoList] = useState([]);
   const [status, setStatus] = useState("public");
-
+  const videoRef = useRef(null);
   useEffect(() => {
     (async () => {
       const list = await getPendingVideos();
       setPendingVideoList(list);
     })();
-  }, [pendingVideoList]);
+  }, []);
+  useEffect(() => {
+    let options = {
+      rootMargin: "0px",
+      threshold: [0.95],
+    };
+
+    let handlePlay = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (videoRef.current && document.visibilityState === "visible") {
+            videoRef.current.play();
+          } else {
+            document.addEventListener(
+              "visibilitychange",
+              function onVisibilityChange() {
+                if (
+                  document.visibilityState === "visible" &&
+                  videoRef.current
+                ) {
+                  videoRef.current.play();
+                  document.removeEventListener(
+                    "visibilitychange",
+                    onVisibilityChange
+                  );
+                }
+              }
+            );
+          }
+        } else {
+          if (videoRef.current) {
+            videoRef.current.pause();
+          }
+        }
+      });
+    };
+
+    let observer;
+    if (videoRef.current) {
+      observer = new IntersectionObserver(handlePlay, options);
+      observer.observe(videoRef.current);
+      return () => {
+        if (observer && videoRef.current) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          observer.unobserve(videoRef.current);
+        }
+      };
+    }
+  }, [videoRef]);
 
   const acceptVideo = async (videoId) => {
     try {
@@ -122,12 +171,12 @@ const Tables = () => {
             <div className={"content-video"}>
               <div className={"video"}>
                 <video
+                  ref={videoRef}
                   src={video.url}
                   controls
                   loop
-                  autoPlay
                   muted={false}
-                  style={{ width: "100%", height: "456px" }}
+                  style={{ width: "100%", height: "584px" }}
                 ></video>
               </div>
 

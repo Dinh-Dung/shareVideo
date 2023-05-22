@@ -65,3 +65,14 @@ export async function acceptVideo(videoId) {
         return [];
     }
 }
+export async function acceptPrivateVideo(videoId) {
+    try {
+        const { data, error } = await axios.post(`http://localhost:8080/video/acceptPrivateVideo`, { videoId });
+
+        if (!data || error) throw new Error();
+
+        return data.data;
+    } catch (error) {
+        return [];
+    }
+}

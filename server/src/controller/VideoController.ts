@@ -35,6 +35,7 @@ export class VideoController {
     this.deleteVideo = this.deleteVideo.bind(this);
     this.getPrivateVideos = this.getPrivateVideos.bind(this);
     this.acceptVideoAtClient = this.acceptVideoAtClient.bind(this);
+    this.acceptPrivateVideo = this.acceptPrivateVideo.bind(this);
   }
 
   async uploadVideo(
@@ -280,6 +281,34 @@ export class VideoController {
       if (video.status === VideoStatus.Private) {
         video.status = VideoStatus.Pending;
         video.user_request_status = VideoStatus.Public;
+        await this.videoRepository.save(video);
+      }
+      return response.status(200).json({
+        data: video,
+        error: null,
+      });
+    } catch (error) {
+      return response.status(400).json({
+        data: null,
+        error: "post videos failed",
+      });
+    }
+  }
+  async acceptPrivateVideo(
+    request: Request & { file: any },
+    response: Response,
+    next: NextFunction
+  ) {
+    const { videoId } = request.body;
+    try {
+      // Lấy video cần cập nhật
+      const video = await this.videoRepository.findOne({
+        where: { id: videoId },
+      });
+      // Kiểm tra và cập nhật trạng thái nếu video có trạng thái là "private"
+      if (video.status === VideoStatus.Public) {
+        video.status = VideoStatus.Private;
+        video.user_request_status = VideoStatus.Private;
         await this.videoRepository.save(video);
       }
       return response.status(200).json({

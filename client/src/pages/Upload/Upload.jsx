@@ -94,17 +94,18 @@ const Upload = () => {
                                                 </div>
                                                 <div className={cx('text-video-info')}>
                                                     <div className={cx('tfi1')}>
-                                                        <span>MP4 or WebM</span>
+                                                        <span>MP4</span>
                                                     </div>
                                                     <div className={cx('tfi2')}>
                                                         <span>720x1280 resolution or higher</span>
                                                     </div>
                                                     <div className={cx('tfi3')}>
-                                                        <span>Up to 30 minutes</span>
+                                                        <span>Up to 10 minutes</span>
                                                     </div>
                                                     <div className={cx('tfi4')}>
-                                                        <span>Less than 50 MB</span>
+                                                        <span></span>
                                                     </div>
+                                                    Less than 30 MB
                                                 </div>
                                                 <div className={cx('file-select-button')}>
                                                     <Button primary>Select file</Button>

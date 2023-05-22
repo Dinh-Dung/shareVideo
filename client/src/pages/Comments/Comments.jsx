@@ -7,6 +7,7 @@ import {
     faCircleXmark,
     faCircleCheck,
     faTrash,
+    faLock,
 } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 import { Code, Telegram, FaceBook, WhatsApp, Twitter, Share } from '../../components/Icons';
@@ -20,7 +21,7 @@ import { likeCountOfVideo } from '~/utils/like-api';
 import { getVideoAndCommentById } from '~/utils/video-api';
 import { Comment, deleteComment } from '~/utils/comment-api';
 import { likeVideo, unlikeVideo, userLiked } from '~/utils/like-api';
-import { deleteVideo, acceptVideo } from '~/utils/video-api';
+import { deleteVideo, acceptVideo, acceptPrivateVideo } from '~/utils/video-api';
 
 const cx = classNames.bind(styles);
 function Comments() {
@@ -109,6 +110,7 @@ function Comments() {
             console.log(error);
         }
     };
+    // accpet video dang o trang thai private thanh public
     const acceptVideoPrivate = async (id) => {
         try {
             await acceptVideo(id);
@@ -118,7 +120,16 @@ function Comments() {
             setVideo(updateVideoList);
         } catch (error) {}
     };
-
+    // accept video dang o trang thai public thanhg private
+    const acceptVideoPublics = async (id) => {
+        try {
+            await acceptPrivateVideo(id);
+            const pendingVideoArray = [...video];
+            const updateVideoList = pendingVideoArray.filter((video) => video.id === id);
+            navigate('/');
+            setVideo(updateVideoList);
+        } catch (error) {}
+    };
     if (!user || video === null) {
         return (
             <>
@@ -157,23 +168,36 @@ function Comments() {
                                 <span>{video.user.created_at.slice(0, 10)}</span>
                             </span>
                         </Link>
-                        {/* <button type="button" className={cx('btn-follow')}>
-                            Follow
-                        </button> */}
+                        {/* thu hien chap nhan video tu public sang thanh private */}
+                        {user.id === video.user.id ? (
+                            <>
+                                {video.user_request_status === 'public' ? (
+                                    <button className={cx('acceptvideo')} onClick={() => acceptVideoPublics(video.id)}>
+                                        <FontAwesomeIcon icon={faLock} style={{ width: '18px', height: '18px' }} />
+                                    </button>
+                                ) : (
+                                    <></>
+                                )}
+                            </>
+                        ) : (
+                            <></>
+                        )}
+
+                        {/* thu hien chap nhan video tu private sang thanh public */}
                         {user.id === video.user.id ? (
                             <>
                                 {video.user_request_status === 'private' ? (
                                     <button className={cx('acceptvideo')} onClick={() => acceptVideoPrivate(video.id)}>
                                         <FontAwesomeIcon
                                             icon={faCircleCheck}
-                                            style={{ width: '22px', height: '22px' }}
+                                            style={{ width: '18px', height: '18px' }}
                                         />
                                     </button>
                                 ) : (
                                     <></>
                                 )}
                                 <button className={cx('deletevideo')} onClick={() => deletePendingVideo(video.id)}>
-                                    <FontAwesomeIcon icon={faTrash} style={{ width: '22x', height: '22px' }} />
+                                    <FontAwesomeIcon icon={faTrash} style={{ width: '18px', height: '18px' }} />
                                 </button>
                             </>
                         ) : (

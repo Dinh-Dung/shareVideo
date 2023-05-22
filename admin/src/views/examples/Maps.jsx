@@ -48,7 +48,7 @@ const Maps = () => {
         setAllUser(listAllUser);
       }
     })();
-  }, []);
+  }, [user]);
 
   const deleteUserOfAdmin = async (id) => {
     try {
